@@ -1,7 +1,7 @@
 import Button from "./button";
 import{useState} from 'react';
 
-function testComponent(){
+function TestComponent(){
     const [index,setIndex] = useState(0);
 
     const handleClick =()=>{
@@ -18,4 +18,4 @@ function testComponent(){
         </div>
     )
 }
-export default testComponent;
+export default TestComponent;

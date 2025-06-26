@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu, X, ShoppingBag, Search, User } from "lucide-react";
+import { Link } from "react-router";
 
 
 export default function Navigation() {
@@ -12,9 +13,9 @@ export default function Navigation() {
       <div>
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="/" className="font-bold text-2xl">
+          <Link to="/" className="font-bold text-2xl">
             Mebius
-          </a> 
+          </Link> 
 
           {/* Desktop Navigation */}
 
@@ -48,13 +49,13 @@ export default function Navigation() {
               },
             ].map((item) => {
               return (
-                <a
+                <Link
                   key={item.path}
-                  href={item.path}
+                  to={item.path}
                   className="font-medium hover:text-gray-600"
                 >
                   {item.label}
-                </a>
+                </Link>
               );
             })}
           </nav>
@@ -64,8 +65,8 @@ export default function Navigation() {
             <button aria-label="Search" className="p-1">
               <Search size={20} />
             </button>
-            <a
-              href="/shop/cart"
+            <Link
+              to="/shop/cart"
               aria-label="Shopping Bag"
               className="p-1 relative"
             >
@@ -73,15 +74,15 @@ export default function Navigation() {
               <span className="absolute -top-1 -right-1 bg-black text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
                 {0}
               </span>
-            </a>
+            </Link>
             {/* <SignedIn>
               <UserButton />
             </SignedIn> */}
             <div className="hidden md:block">
               {/* <SignedOut> */}
               <div className="flex items-center gap-4">
-                <a href="/sign-in">Sign In</a>
-                <a href="/sign-up">Sign Up</a>
+                <Link to="/sign-in">Sign In</Link>
+                <Link to="/sign-up">Sign Up</Link>
               </div>
               {/* </SignedOut> */}
             </div>
@@ -124,22 +125,22 @@ export default function Navigation() {
                 label: "Socks" 
               },
             ].map((item) => (
-              <a
+              <Link
                 key={item.path}
-                href={item.path}
+                to={item.path}
                 className="block px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md"
                 onClick={closeMobileMenu}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </div>
 
           <div className="block md:hidden px-4">
             {/* <SignedOut> */}
             <div className="flex items-center gap-4">
-              <a href="/sign-in">Sign In</a>
-              <a href="/sign-up">Sign Up</a>
+              <Link to="/sign-in">Sign In</Link>
+              <Link to="/sign-up">Sign Up</Link>
             </div>
             {/* </SignedOut> */}
           </div>
