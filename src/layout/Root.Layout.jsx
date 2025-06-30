@@ -4,7 +4,7 @@ import  Navigation  from "@/components/ui/Navigation";
 function RootLayout(){
     return(
          <>
-            <Navigation />
+            {/* <Navigation /> */}
             <Outlet />
         </>
     )

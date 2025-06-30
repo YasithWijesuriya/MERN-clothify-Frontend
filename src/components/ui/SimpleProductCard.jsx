@@ -1,5 +1,9 @@
-function SimpleProductCard(props) {
+import { Button } from "./button";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/lib/features/cartSlice";
 
+function SimpleProductCard(props) {
+  const dispatch = useDispatch();
     return (
       <div key={props.product._id}>
         <div className=" sm:h-72  md:h-72 md:w-60">
@@ -10,15 +14,24 @@ function SimpleProductCard(props) {
           />
         </div>
         <div className="mt-2">
-          <span className="text-lg sm:text-l md:text-xl font-bold block">
+          <span className="text-lg  md:text-[15px] sm:text-2xl font-bold block">
             {props.product.name}
           </span>
           <span className="text-base sm:text-lg md:text-xl block">
             ${props.product.price}
           </span>
-          <span>
-          
-          </span>
+         <div>
+          <Button onClick={()=>  dispatch(
+              addToCart({
+                _id: props.product._id,
+                name: props.product.name,
+                price: props.product.price,
+                image: props.product.image,
+              })
+            )} className="bg-black text-white  rounded-lg px-6 py-2  mt-2  transition-colors duration-300 cursor-pointer">
+            Add to Cart
+          </Button>
+         </div>
         </div>
       </div>
       

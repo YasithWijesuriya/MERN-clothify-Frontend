@@ -1,11 +1,21 @@
 import { useState } from "react";
 import { Menu, X, ShoppingBag, Search, User } from "lucide-react";
 import { Link } from "react-router";
+import { useSelector } from "react-redux";
+
 
 
 export default function Navigation() {
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  console.log(cartItems);
+
+  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
+  const cartItemCount = cartItems.reduce(
+     (total, item) => total + item.quantity,
+     0
+   );
   const closeMobileMenu = () => setIsMenuOpen(false);
 
   return (
@@ -72,7 +82,7 @@ export default function Navigation() {
             >
               <ShoppingBag size={20} />
               <span className="absolute -top-1 -right-1 bg-black text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-                {0}
+               {cartItemCount}
               </span>
             </Link>
             {/* <SignedIn>
