@@ -10,8 +10,8 @@ import SignInPage from './pages/sign-in.page';
 import SignUpPage from './pages/sign-up.page';
 import ShopPage from './pages/shop.page';
 import RootLayout from './layout/Root.Layout';
-
-
+import CartPage from './pages/cart.page';
+import CheckoutPage from './pages/checkout.page';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -22,6 +22,8 @@ createRoot(document.getElementById('root')).render(
             <Route path="/" element={<HomePage />} />
             <Route path="/shop">
               <Route path=":category" element={<ShopPage/>} />
+              <Route path="cart" element={<CartPage/>} />
+              <Route path="checkout" element={<CheckoutPage/>} />
             </Route>
           </Route>
           <Route path="/sign-In" element={<SignInPage />} />

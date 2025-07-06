@@ -1,4 +1,4 @@
-import { Button } from "./button";
+import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/lib/features/cartSlice";
 

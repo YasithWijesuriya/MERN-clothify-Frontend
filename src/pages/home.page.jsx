@@ -1,7 +1,6 @@
-import Navigation from "@/components/ui/Navigation";
-import CasualInspirations from "../components/ui/CasualInspirations";
-import HeroGrid from "../components/ui/HeroGrid";
-import TrendingSection from "../components/ui/TrendingSection";
+import CasualInspirations from "../components/CasualInspirations";
+import HeroGrid from "../components/HeroGrid";
+import TrendingSection from "../components/TrendingSection";
 
 
 
@@ -9,7 +8,6 @@ function HomePage() {
    
   return (
     <>
-    <Navigation />
     <main>
       <HeroGrid />
       <CasualInspirations />

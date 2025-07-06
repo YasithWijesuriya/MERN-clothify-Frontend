@@ -1,10 +1,10 @@
 import { Outlet } from "react-router";
-import  Navigation  from "@/components/ui/Navigation";
+import  Navigation  from "@/components/Navigation";
 
 function RootLayout(){
     return(
          <>
-            {/* <Navigation /> */}
+            <Navigation />
             <Outlet />
         </>
     )
