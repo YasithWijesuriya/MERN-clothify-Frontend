@@ -51,6 +51,7 @@ function ShippingAddressForm() {
         <Label>Last Name</Label>
         <Input name="lname" className={errors.lname ? "border-red-500" : ""} />
       </div>
+      
       <Button>Submit</Button>
     </form>
   );
