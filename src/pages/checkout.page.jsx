@@ -2,29 +2,49 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router";
 import CartItem from "@/components/CartItem";
 import ShippingAddressForm from "@/components/ShippingAddressForm";
+import { Card } from "@/components/ui/card";
 
 function CheckoutPage() {
-    const cart = useSelector((state) => state.cart.cartItems);
+  const cart = useSelector((state) => state.cart.cartItems);
 
-    if(cart.length === 0){
-        return <Navigate to="/" />;
-    }
-    return (
-        <main className="px-16 min-h-screen py-8">
-            <h2 className="text-4xl font-bold">Checkout Page</h2>
-            <div className="mt-4 grid grid-cols-2 w-1/2 gap-x-4">
-            <h3 className="text-2xl font-bold">Order Details</h3>
-            <div className="mt-2 col-span-2 grid grid-cols-2 gap-x-4">
-                {cart.map((item, index) => (
-                    <CartItem key={index} item={item} />
-                ))}
+  if (cart.length === 0) {
+    return <Navigate to="/" />;
+  }
+
+  // Calculate total price
+  const total = cart.reduce(
+    (sum, item) => sum + (item.product.price || 0) * (item.quantity || 1),
+    0
+  );
+
+  return (
+    <main className="px-4 md:px-16 min-h-screen py-8 bg-gray-50">
+      <h2 className="text-4xl font-bold mb-8 text-center">Checkout</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <section>
+          <Card className="p-6 mb-6 shadow-lg border rounded-lg">
+            <h3 className="text-2xl font-bold mb-4 text-gray-800">
+              Order Details
+            </h3>
+            <div className="space-y-4">
+              {cart.map((item, index) => (
+                <CartItem key={index} item={item} />
+              ))}
             </div>
+            <div className="mt-6 flex justify-between items-center border-t pt-4">
+              <span className="text-lg font-semibold">Total:</span>
+              <span className="text-xl font-bold text-blue-600">
+                ${total.toFixed(2)}
+              </span>
             </div>
-            <div className="mt-4">
-                <h3 className="text-2xl font-bold">Shipping Address Form</h3>
-                <ShippingAddressForm />
-            </div>
-        </main>
-    )
+          </Card>
+        </section>
+        <section>
+          <ShippingAddressForm />
+        </section>
+      </div>
+    </main>
+  );
 }
+
 export default CheckoutPage;
