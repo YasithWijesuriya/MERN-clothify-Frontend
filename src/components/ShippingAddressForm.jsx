@@ -13,10 +13,13 @@ import { Card } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useCreateOrderMutation } from "@/lib/api";
+import { useSelector } from "react-redux";
+
 
 const shippingAddressSchema = z.object({
-  line1: z.string().min(1, "Address line 1 is required"),
-  line2: z.string().optional(),
+  line_1: z.string().min(1, "Address line 1 is required"),
+  line_2: z.string().optional(),
   city: z.string().min(1, "City is required"),
   phone: z.string().min(1, "Phone number is required"),
 });
@@ -25,16 +28,30 @@ function ShippingAddressForm() {
   const form = useForm({
     resolver: zodResolver(shippingAddressSchema),
     defaultValues: {
-      line1: "",
-      line2: "",
+      line_1: "",
+      line_2: "",
       city: "",
       phone: "",
     },
   });
-
-  function onSubmit(values) {
-    console.log("Shipping Address Submitted:", values);
-    // Handle form submission
+   const cart = useSelector((state) => state.cart.cartItems);
+  const[createOrder, { isLoading }] = useCreateOrderMutation();
+  
+  async function onSubmit(values) {
+    console.log("Shipping Address:", values);
+    console.log("Cart Items:", cart);
+    try {
+      await createOrder({
+        shippingAddress: values,
+        orderItems: cart.map((item) => ({
+          productId: item.product._id,
+          quantity: item.quantity,
+        })),
+      }).unwrap();
+    } catch (error) {
+      console.error("Error creating order:", error);
+    }
+    
   }
 
   return (
@@ -46,7 +63,7 @@ function ShippingAddressForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
-              name="line1"
+              name="line_1"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Address Line 1</FormLabel>
@@ -63,7 +80,7 @@ function ShippingAddressForm() {
             />
             <FormField
               control={form.control}
-              name="line2"
+              name="line_2"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Address Line 2</FormLabel>
