@@ -1,5 +1,7 @@
+
 function HeroGrid() {
     return (
+      
         <section className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 px-4 lg:px-16 min-h-[60vh] md:min-h-[80vh] gap-4 mt-16">
              <div className="relative col-span-1 md:col-span-2 rounded-2xl">
         <img

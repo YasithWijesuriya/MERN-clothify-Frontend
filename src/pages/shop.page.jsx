@@ -1,4 +1,5 @@
-import { useGetAllProductsQuery } from "@/lib/API";
+import { useGetAllProductsQuery } from "@/lib/api";
+import Spinner from "@/components/ui/loadingSpinner";
 // import { getAllProducts } from "@/lib/product";
 // import { useEffect, useState } from "react";
 // import { useParams } from "react-router";
@@ -24,7 +25,7 @@ function ShopPage(){
     } = useGetAllProductsQuery();
 
     if (isLoading) {
-        return <p>Loading...</p>;
+        return <Spinner />;
     }
 
     console.log(products);

@@ -1,9 +1,8 @@
 import { Outlet , Navigate } from "react-router"
 import { useUser } from "@clerk/clerk-react"
-import { User } from "lucide-react";
 
 const protectedLayout = () => {
-  const { isLoaded , isSignedIn } = useUser();
+  const { isLoaded , isSignedIn , user} = useUser();
 
   if (!isLoaded) {
     return null;
@@ -12,7 +11,7 @@ const protectedLayout = () => {
     return <Navigate to="/sign-in"/>;
 
   }
-  console.log(User);
+  // console.log(user);
 
   return <Outlet />;
 

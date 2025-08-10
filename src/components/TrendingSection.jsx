@@ -3,6 +3,7 @@ import CategoryButton from "./CategoryButton";
 import SimpleProductCard from "./SimpleProductCard";
 import { useState } from "react";
 
+
 function TrendingSection() {
     const [selectedCategoryId, setSelectedCategoryId] = useState("ALL");
     const  filteredProducts = selectedCategoryId === "ALL" ? 
@@ -39,6 +40,7 @@ function TrendingSection() {
       </section>
        
     );
+    
   }
   
   export default TrendingSection;

@@ -2,35 +2,33 @@ import { useState } from "react";
 import { Menu, X, ShoppingBag, Search, User } from "lucide-react";
 import { Link } from "react-router";
 import { useSelector } from "react-redux";
-import{ SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
-
-
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/clerk-react";
 
 export default function Navigation() {
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const { user } = useUser();
   console.log(cartItems);
 
-  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+
   const cartItemCount = cartItems.reduce(
-     (total, item) => total + item.quantity,
-     0
-   );
+    (total, item) => total + item.quantity,
+    0
+  );
   const closeMobileMenu = () => setIsMenuOpen(false);
 
   return (
-    <header className="bg-white border-b border-gray-200 px-4 lg:px-16">
+    <header className="bg-white border-b border-gray-200 px-4 lg:px-16 shadow-md">
       <div>
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="font-bold text-2xl">
+          <Link to="/" className="font-bold md:text-2xl sm:text-xl">
             Mebius
-          </Link> 
+          </Link>
 
           {/* Desktop Navigation */}
 
-           {/* <a href="/shop/shoes" className="font-medium hover:text-gray-600">Shoes</a>
+          {/* <a href="/shop/shoes" className="font-medium hover:text-gray-600">Shoes</a>
         <a href="/shop/tshirts" className="font-medium hover:text-gray-600">T-shirts</a>
         <a href="/shop/shorts" className="font-medium hover:text-gray-600">Shorts</a>
         <a href="/shop/pants" className="font-medium hover:text-gray-600">Pants</a>
@@ -70,9 +68,18 @@ export default function Navigation() {
               );
             })}
           </nav>
+          {user?.publicMetadata?.role === "admin" && (
+            <Link
+              to="/admin/products/create"
+              className="font-medium hover:text-gray-600 bg-black text-white sm:md:px-2 md:py-1 rounded-xl
+    md:text-[15px] sm:text-[8px] "
+            >
+              Create Product
+            </Link>
+          )}
 
           {/* Icons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 ">
             <button aria-label="Search" className="p-1">
               <Search size={20} />
             </button>
@@ -83,7 +90,7 @@ export default function Navigation() {
             >
               <ShoppingBag size={20} />
               <span className="absolute -top-1 -right-1 bg-black text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-               {cartItemCount}
+                {cartItemCount}
               </span>
             </Link>
             <SignedIn>
@@ -91,10 +98,10 @@ export default function Navigation() {
             </SignedIn>
             <div className="hidden md:block">
               <SignedOut>
-              <div className="flex items-center gap-4">
-                <Link to="/sign-in">Sign In</Link>
-                <Link to="/sign-up">Sign Up</Link>
-              </div>
+                <div className="flex items-center gap-4">
+                  <Link to="/sign-in">Sign In</Link>
+                  <Link to="/sign-up">Sign Up</Link>
+                </div>
               </SignedOut>
             </div>
 
@@ -115,25 +122,25 @@ export default function Navigation() {
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200">
             {[
-              { 
+              {
                 path: "/shop/shoes",
-                label: "Shoes" 
+                label: "Shoes",
               },
-              { 
+              {
                 path: "/shop/tshirts",
-                label: "T-Shirt" 
+                label: "T-Shirt",
               },
-              { 
-                path: "/shop/shorts", 
-                label: "Shorts"
-               },
-              { 
-                path: "/shop/pants", 
-                label: "Pants" 
+              {
+                path: "/shop/shorts",
+                label: "Shorts",
               },
-              { 
-                path: "/shop/socks", 
-                label: "Socks" 
+              {
+                path: "/shop/pants",
+                label: "Pants",
+              },
+              {
+                path: "/shop/socks",
+                label: "Socks",
               },
             ].map((item) => (
               <Link
@@ -151,14 +158,13 @@ export default function Navigation() {
             <SignedIn>
               <UserButton />
             </SignedIn>
-            
+
             <SignedOut>
-            <div className="flex items-center gap-4">
-              <Link to="/sign-in">Sign In</Link>
-              <Link to="/sign-up">Sign Up</Link>
-            </div>
+              <div className="flex items-center gap-4">
+                <Link to="/sign-in">Sign In</Link>
+                <Link to="/sign-up">Sign Up</Link>
+              </div>
             </SignedOut>
-            
           </div>
         </div>
       )}

@@ -2,8 +2,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Define a service using a base URL and expected endpoints
-export const Api = createApi({
-  reducerPath: "Api",
+export const api = createApi({
+  reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/api",
     prepareHeaders: async (headers) => {
@@ -26,6 +26,16 @@ export const Api = createApi({
     getAllProducts: build.query({
       query: () =>  `/products`,
     }),
+    getAllCategories: build.query({
+      query: () =>  `/categories`,
+    }),
+    createProduct: build.mutation({
+      query: (productData) => ({
+        url: '/products',
+        method: 'POST',
+        body: productData,
+      }),
+    }),
     createOrder: build.mutation({
       query: (orderData) => ({
         url: '/orders',
@@ -39,4 +49,9 @@ export const Api = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetAllProductsQuery , useCreateOrderMutation } = Api;
+export const { 
+  useGetAllProductsQuery , 
+  useCreateOrderMutation, 
+  useCreateProductMutation, 
+  useGetAllCategoriesQuery } = api;
+

@@ -15,6 +15,8 @@ import RootLayout from './layout/Root.Layout';
 import CartPage from './pages/cart.page';
 import CheckoutPage from './pages/checkout.page';
 import ProtectedLayout from './layout/Protected.Layout.jsx';
+import CreateProductPage from './pages/createProduct.page.jsx';
+import AdminProtectedLayout from './layout/Admin-protected.Layout.jsx';
 
  // Import your Publishable Key
   const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -29,7 +31,7 @@ createRoot(document.getElementById('root')).render(
     <Provider store={store}>
         <BrowserRouter>
         <Routes>
-            <Route element={<RootLayout/>}>
+          <Route element={<RootLayout/>}>
             <Route path="/" element={<HomePage />} />
             <Route path="/shop">
               <Route path=":category" element={<ShopPage/>} />
@@ -37,6 +39,11 @@ createRoot(document.getElementById('root')).render(
               <Route element={<ProtectedLayout/>}>
               <Route path="checkout" element={<CheckoutPage/>} />
               </Route>
+            </Route>
+            <Route element={<ProtectedLayout/>}>
+              <Route element={<AdminProtectedLayout/>}>
+                <Route path="/admin/products/create" element={<CreateProductPage />} />
+               </Route>
             </Route>
           </Route>
           <Route path="/sign-In" element={<SignInPage />} />
