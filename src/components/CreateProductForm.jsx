@@ -34,16 +34,29 @@ const createProductSchema = z.object({
 });
 
 function createProductForm({categories}) {
-    
-    const form = useForm({
-        resolver: zodResolver(createProductSchema),
-    });
-
+  
+  
+  
+  const form = useForm({
+    resolver: zodResolver(createProductSchema),
+    defaultValues: {
+      categoryId: "",
+      name: "",
+      image: "",
+      stock: "",
+      price:"",
+    },
+  });
+  const { reset } = form; 
+  
     const [createProduct, {isLoading}] = useCreateProductMutation();
+
+
     const onSubmit = async (values) => {
     try {
+      await createProduct(values).unwrap();
       console.log(values);
-       await createProduct(values).unwrap();
+      reset(); 
     } catch (error) {
       console.log(error);
     }
@@ -122,7 +135,7 @@ function createProductForm({categories}) {
                       placeholder="Enter stock quantity"
                       {...field}
                       onChange={(e) => {
-                       field.onChange(parseInt(e.target.value, 10 || 0));
+                        field.onChange(parseInt(e.target.value, 10) || 0);
                       }}
                       className="focus:ring-2 focus:ring-blue-500 text-base py-3 px-4 w-full"
                     />
@@ -143,7 +156,7 @@ function createProductForm({categories}) {
                       placeholder="Enter product price"
                       {...field}
                       onChange={(e) => {
-                        field.onChange(parseFloat(e.target.value) || 0);
+                        field.onChange(parseInt(e.target.value, 10) || 0);
                       }}
                       className="focus:ring-2 focus:ring-blue-500 text-base py-3 px-4 w-full"
                     />

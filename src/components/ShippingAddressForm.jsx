@@ -14,7 +14,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useCreateOrderMutation } from "@/lib/api";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { clearCart } from "@/lib/features/cartSlice";
 
 
 const shippingAddressSchema = z.object({
@@ -35,6 +36,7 @@ function ShippingAddressForm() {
     },
   });
    const cart = useSelector((state) => state.cart.cartItems);
+  const dispatch = useDispatch();
   const[createOrder, { isLoading }] = useCreateOrderMutation();
   
   async function onSubmit(values) {
@@ -48,6 +50,11 @@ function ShippingAddressForm() {
           quantity: item.quantity,
         })),
       }).unwrap();
+      
+      // Clear the cart after successful order creation
+      dispatch(clearCart());
+      console.log("Cart cleared successfully!");
+      
     } catch (error) {
       console.error("Error creating order:", error);
     }
@@ -132,8 +139,8 @@ function ShippingAddressForm() {
               )}
             />
           </div>
-          <Button type="submit" className="w-full mt-4">
-            Submit
+          <Button type="submit" className="w-full mt-4" disabled={isLoading}>
+            {isLoading ? "Creating Order..." : "Submit"}
           </Button>
         </form>
       </Form>

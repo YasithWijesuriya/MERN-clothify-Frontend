@@ -1,4 +1,3 @@
-import Button from "./button";
 import{useState} from 'react';
 
 function TestComponent(){
@@ -18,4 +17,3 @@ function TestComponent(){
         </div>
     )
 }
-export default TestComponent;

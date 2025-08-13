@@ -1,7 +1,7 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// Define a service using a base URL and expected endpoints
+//client-side data fetching with Redux Toolkit Query (RTK Query)
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -17,6 +17,7 @@ export const api = createApi({
           } else {
             setTimeout(checkToken, 500);
           }
+
         }
         checkToken();
       });
@@ -26,8 +27,17 @@ export const api = createApi({
     getAllProducts: build.query({
       query: () =>  `/products`,
     }),
+    getProductsByCategory: build.query({
+      query: (categoryId) => `/products?categoryId=${categoryId}`,
+  }),
     getAllCategories: build.query({
       query: () =>  `/categories`,
+    }),
+    getAllReviews :build.query({
+      query: () => `/reviews`,
+    }),
+    getReviewsByProduct: build.query({
+  query: (productId) => `/reviews/${productId}`, 
     }),
     createProduct: build.mutation({
       query: (productData) => ({
@@ -43,15 +53,28 @@ export const api = createApi({
         body: orderData,
       }),
     }),
+    createReviews: build.mutation({
+      query: (reviewData) => ({
+        url: '/reviews',
+        method: 'POST',
+        body: reviewData,
+      })
+    }),
   }),
-});
+})
   
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const { 
-  useGetAllProductsQuery , 
+  useGetAllProductsQuery,
+  useGetProductsByCategoryQuery,
   useCreateOrderMutation, 
   useCreateProductMutation, 
-  useGetAllCategoriesQuery } = api;
+  useGetAllCategoriesQuery,
+  useGetAllReviewsQuery,
+  useCreateReviewsMutation,
+  useGetReviewsByProductQuery
+} = api;
+
 

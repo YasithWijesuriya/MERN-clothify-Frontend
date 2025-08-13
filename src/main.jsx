@@ -17,6 +17,7 @@ import CheckoutPage from './pages/checkout.page';
 import ProtectedLayout from './layout/Protected.Layout.jsx';
 import CreateProductPage from './pages/createProduct.page.jsx';
 import AdminProtectedLayout from './layout/Admin-protected.Layout.jsx';
+import ProductView from './components/ProductView';
 
  // Import your Publishable Key
   const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -30,25 +31,24 @@ createRoot(document.getElementById('root')).render(
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
     <Provider store={store}>
         <BrowserRouter>
-        <Routes>
-          <Route element={<RootLayout/>}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/shop">
-              <Route path=":category" element={<ShopPage/>} />
-              <Route path="cart" element={<CartPage/>} />
-              <Route element={<ProtectedLayout/>}>
-              <Route path="checkout" element={<CheckoutPage/>} />
-              </Route>
+                  <Routes>
+            <Route element={<RootLayout/>}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/shop" element={<ShopPage />} />
+              <Route path="/shop/:category" element={<ShopPage />} />
+              <Route path="/shop/cart" element={<CartPage/>} />
+              <Route path="/product/:productId" element={<ProductView />} />
+              <Route path="/sign-In" element={<SignInPage />} />
+              <Route path="/sign-Up" element={<SignUpPage />} />
             </Route>
+            
             <Route element={<ProtectedLayout/>}>
+              <Route path="shop/checkout" element={<CheckoutPage/>} />
               <Route element={<AdminProtectedLayout/>}>
                 <Route path="/admin/products/create" element={<CreateProductPage />} />
-               </Route>
+              </Route>
             </Route>
-          </Route>
-          <Route path="/sign-In" element={<SignInPage />} />
-          <Route path="/sign-Up" element={<SignUpPage />} />
-        </Routes>
+          </Routes>
       </BrowserRouter>
     </Provider>
     </ClerkProvider>
