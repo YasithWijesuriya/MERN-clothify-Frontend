@@ -3,7 +3,7 @@ import {z} from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useCreateProductMutation } from "@/lib/api";
+import { useCreateProductMutation , useGetColorsQuery} from "@/lib/api";
 import ImageInput from "./Image-Input"
 
 
@@ -16,6 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
 
 import {
   Select,
@@ -30,7 +31,9 @@ const createProductSchema = z.object({
     name: z.string().min(1),
     image: z.string().min(1),
     stock: z.number(),
+    description: z.string().min(1),
     price: z.number().nonnegative(),
+    colorId: z.string().min(1),
 });
 
 function createProductForm({categories}) {
@@ -50,7 +53,6 @@ function createProductForm({categories}) {
   const { reset } = form; 
   
     const [createProduct, {isLoading}] = useCreateProductMutation();
-
 
     const onSubmit = async (values) => {
     try {
@@ -122,7 +124,51 @@ function createProductForm({categories}) {
                 </FormItem>
               )}
             />
-                     
+            <FormField 
+            
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Enter product description"
+                      {...field}
+                      className="focus:ring-2 focus:ring-blue-500 text-base py-3 px-4 w-full"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          <FormField
+            control={form.control}
+            name="colorId"
+            render={({ field }) => {
+              const { data: colors = [] } = useGetColorsQuery();
+              return (
+                <FormItem>
+                  <FormLabel>Color</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select a color" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {colors?.map((color) => (
+                          <SelectItem key={color._id} value={color._id}>
+                            {color.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
         <FormField
               control={form.control}
               name="stock"
@@ -166,6 +212,7 @@ function createProductForm({categories}) {
               )}
             />
             <Button type="submit" className="w-full mt-4">Submit </Button>
+           
 
         </form>
 

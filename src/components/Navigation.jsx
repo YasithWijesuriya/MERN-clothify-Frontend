@@ -3,14 +3,12 @@ import { Menu, X, ShoppingBag, Search, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/clerk-react";
-import { useGetAllCategoriesQuery } from "../lib/api"; // <- API hook import
+
 
 export default function Navigation() {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const { user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const { data: categories, isLoading, error } = useGetAllCategoriesQuery();
 
   const cartItemCount = cartItems.reduce(
     (total, item) => total + item.quantity,
@@ -28,22 +26,21 @@ export default function Navigation() {
         </Link>
 
         {/* Desktop Navigation */}
-       {/* <nav className="hidden md:flex space-x-8">
+       <nav className="hidden md:flex space-x-8">
           <Link to="/shop" className="font-medium hover:text-gray-600">
-            All
+            Home
           </Link>
-          {!isLoading &&
-            !error &&
-            categories?.map((cat) => (
-              <Link
-                key={cat._id}
-                to={`/shop/${cat.categorySlug}`}
-                className="font-medium hover:text-gray-600"
-              >
-                {cat.name}
-              </Link>
-            ))}
-        </nav> */}
+          <Link to="/Gallery" className="font-medium hover:text-gray-600">
+            Gallery
+          </Link>
+          <Link to="/About" className="font-medium hover:text-gray-600">
+            About Us
+          </Link>
+          <Link to="/Contact" className="font-medium hover:text-gray-600">
+            Contact
+          </Link>
+          
+        </nav> 
        
         {user?.publicMetadata?.role === "admin" && (
           <Link
@@ -95,27 +92,7 @@ export default function Navigation() {
       {/* Mobile Navigation */}
       {isMenuOpen && (
         <div className="md:hidden">
-           {/*<div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200">
-           <Link
-              to="/shop"
-              className="block px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md"
-              onClick={closeMobileMenu}
-            >
-              All
-            </Link>
-            {!isLoading &&
-              !error &&
-              categories?.map((cat) => (
-                <Link
-                  key={cat._id}
-                  to={`/shop/${cat.categorySlug}`}
-                  className="block px-3 py-2 text-base font-medium hover:bg-gray-100 rounded-md"
-                  onClick={closeMobileMenu}
-                >
-                  {cat.name}
-                </Link>
-              ))}
-          </div>*/}
+           
 
           <div className="block md:hidden px-4">
             <SignedIn>

@@ -51,8 +51,7 @@ export default function ProductView() {
       <div className="max-w-3xl mx-auto mb-6">
         <Link
           to="/"
-          className="inline-flex font-bold [text-shadow:_2px_1px_3px_rgba(0,0,0,1)] items-center gap-2 text-blue-400 hover:text-blue-600 transition-colors text-xl"
-
+          className="inline-flex font-bold  items-center gap-2 text-blue-400 hover:text-blue-600 transition-colors text-xl"
         >
           <ArrowLeft size={25} />
           Back to Shop
@@ -77,22 +76,8 @@ export default function ProductView() {
               <p className="text-lg font-semibold text-blue-600">
                 LKR {product.price.toLocaleString()}
               </p>
+              <p className="text-sm text-gray-600">{product.description}</p>
 
-              {/* Color Options */}
-              {product.colors && product.colors.length > 0 && (
-                <div>
-                  <p className="font-medium mb-2">Available Colors:</p>
-                  <div className="flex gap-2">
-                    {product.colors.map((color) => (
-                      <button
-                        key={color}
-                        className="w-8 h-8 rounded-full border"
-                        style={{ backgroundColor: color }}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Add to Cart Button */}
               <div className="mt-6">

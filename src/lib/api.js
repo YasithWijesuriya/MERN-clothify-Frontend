@@ -23,42 +23,104 @@ export const api = createApi({
       });
     },
   }),
+   tagTypes: ['Products','Reviews'],
   endpoints: (build) => ({
+
+
     getAllProducts: build.query({
-      query: () =>  `/products`,
-    }),
+      query: ({ categorySlug, colorSlug } = {}) => {
+        const params = new URLSearchParams();
+        if (categorySlug) params.append('categorySlug', categorySlug.toLowerCase());
+        if (colorSlug) params.append('colorSlug', colorSlug.toLowerCase());
+        const qs = params.toString();
+        return `/products${qs ? `?${qs}` : ''}`;
+      },
+      providesTags: (result = []) =>
+        result.length
+          ? [
+              ...result.map((p) => ({ type: 'Products', id: p._id })),
+              { type: 'Products', id: 'LIST' },
+            ]
+          : [{ type: 'Products', id: 'LIST' }],
+}),
+
+
     getProductsByCategory: build.query({
-      query: (categoryId) => `/products?categoryId=${categoryId}`,
-  }),
+          query: (categoryId) => `/products?categoryId=${categoryId}`,
+    }),
+
     getAllCategories: build.query({
-      query: () =>  `/categories`,
+          query: () =>  `/categories`,
     }),
+
     getAllReviews :build.query({
-      query: () => `/reviews`,
+          query: () => `/reviews`,
     }),
-    getReviewsByProduct: build.query({
-  query: (productId) => `/reviews/${productId}`, 
-    }),
-    createProduct: build.mutation({
-      query: (productData) => ({
-        url: '/products',
-        method: 'POST',
-        body: productData,
+
+   getReviewsByProduct: build.query({
+      query: (productId) => `/reviews/${productId}`,
+          providesTags: (result, error, productId) =>
+            result
+              ? [
+                  ...result.map((r) => ({ type: 'Reviews', id: r._id })),
+                  { type: 'Reviews', id: productId },
+                ]
+              : [{ type: 'Reviews', id: productId }],
       }),
+
+    getColors: build.query({
+          query: () => '/colors',
+          providesTags: (result = []) => [
+            ...result.map(({ _id }) => ({ type: 'Colors', id: _id })),
+            { type: 'Colors', id: 'LIST' },
+          ],
+    }),
+
+    createProduct: build.mutation({
+          query: (productData) => ({
+            url: '/products',
+            method: 'POST',
+            body: productData,
+          }),
+          invalidatesTags: [
+            { type: "Products", id: "LIST" }
+          ],
     }),
     createOrder: build.mutation({
-      query: (orderData) => ({
-        url: '/orders',
-        method: 'POST',
-        body: orderData,
-      }),
+          query: (orderData) => ({
+            url: '/orders',
+            method: 'POST',
+            body: orderData,
+          }),
     }),
     createReviews: build.mutation({
-      query: (reviewData) => ({
-        url: '/reviews',
-        method: 'POST',
-        body: reviewData,
-      })
+          query: (reviewData) => ({
+            url: '/reviews',
+            method: 'POST',
+            body: reviewData,
+          }),
+          invalidatesTags: (result, error, arg) => [
+            { type: 'Reviews', id: arg.productId },
+          ],
+    }),
+    deleteProduct: build.mutation({
+          query: (productId) => ({
+            url: `/products/${productId}`,
+            method: 'DELETE',
+          }),
+          invalidatesTags: (result, error, productId) => 
+            [{ type: 'Products', id: productId },
+              {type:"products",id:"LIST"},
+            ],
+        
+    }),
+    deleteReview: build.mutation({
+            query: (reviewId) => ({
+              url: `/reviews/${reviewId}`,
+              method: 'DELETE',
+            }),
+            invalidatesTags: (result, error, { productId }) => 
+          [{ type: 'Reviews', id: productId }],
     }),
   }),
 })
@@ -74,7 +136,10 @@ export const {
   useGetAllCategoriesQuery,
   useGetAllReviewsQuery,
   useCreateReviewsMutation,
-  useGetReviewsByProductQuery
+  useGetReviewsByProductQuery,
+  useDeleteProductMutation,
+  useDeleteReviewMutation,
+  useGetColorsQuery,
 } = api;
 
 
