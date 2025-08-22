@@ -50,7 +50,7 @@ export default function ProductView() {
       {/* Back Button */}
       <div className="max-w-3xl mx-auto mb-6">
         <Link
-          to="/"
+          to="/shop"
           className="inline-flex font-bold  items-center gap-2 text-blue-400 hover:text-blue-600 transition-colors text-xl"
         >
           <ArrowLeft size={25} />

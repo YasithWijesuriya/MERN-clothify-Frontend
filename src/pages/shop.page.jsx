@@ -1,15 +1,18 @@
 // src/pages/ShopPage.jsx
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { Link, useParams} from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/lib/features/cartSlice";
 import { useGetAllProductsQuery,useDeleteProductMutation } from "../lib/api";
 import { Trash2 } from "lucide-react";
 import {useUser} from "@clerk/clerk-react";
+import PriceSort from "@/components/SortProductByPrice";
+
 
 const ShopPage = () => {
   const { category, productId ,categorySlug,colorSlug} = useParams();
   const [imageErrors, setImageErrors] = useState(new Set());
+   const [sortByPrice, setSortByPrice] = useState("");
   const dispatch = useDispatch(); // it's use for dispatch to the action redux store
 
   const {
@@ -19,6 +22,7 @@ const ShopPage = () => {
   } = useGetAllProductsQuery({
     categorySlug,
     colorSlug,
+    sortByPrice, // Pass the sortByPrice state to the query
   });
 
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
@@ -32,27 +36,40 @@ const ShopPage = () => {
   const isAdmin = user?.publicMetadata?.role === 'admin';
 
   if (isLoading) {
-    return <p className="text-center mt-10">Loading products...</p>;
-  }
+  return (
+    <div className="flex justify-center items-center mt-20">
+      <div className="w-10 h-10 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
+      <span className="ml-3 text-gray-600 text-sm font-medium">Loading products...</span>
+    </div>
+  );
+}
 
   if (error) {
-    return <p className="text-center mt-10 text-red-500">Failed to load products.</p>;
-  }
-  //! this part have an error , !!!!!!!!!!!
-  const pr = products?.find(p => p._id === productId)
-   const handleAddToCart = (p) => {
-    // ✅ product object එකෙන්ම cart ට add කරන්න
-    if (!pr) return;
-    dispatch(
-      addToCart({
-        _id: p._id,
-        name: p.name,
-        price: p.price,
-        image: p.image,
-      })
-    );
-  };
-
+  return (
+    <div className="flex flex-col items-center justify-center mt-20">
+      <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-md max-w-md text-center">
+        <p className="font-semibold text-lg">⚠️ Failed to load products</p>
+        <p className="text-sm mt-1">Please try refreshing the page or check your connection.</p>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+        >
+          Retry
+        </button>
+      </div>
+    </div>
+  );
+}
+  const handleAddToCart = (product) => {
+  dispatch(
+    addToCart({
+      _id: product._id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+    })
+  );
+};
   const handleDeleteProduct = async (id,name) => {
     const ok = window.confirm(`"${name}" product will be deleted. Are you sure?`);
     if(!ok) return;
@@ -77,6 +94,7 @@ const ShopPage = () => {
 
   return (
     <div className="p-6">
+      <PriceSort sortByPrice={sortByPrice} setSortByPrice={setSortByPrice} />
       {!filteredProducts || filteredProducts.length === 0 ? (
         <p className="text-center text-gray-500 text-lg">
           No products available.
@@ -133,18 +151,13 @@ const ShopPage = () => {
                       View
                     </Link>
                   <button
-                    onClick={handleAddToCart}
+                    onClick={() => handleAddToCart(product)}
+                    disabled={!product}
                     className="flex-1 px-4 py-2 text-center bg-black text-white text-sm font-medium rounded hover:bg-gray-900 transition"
                   >
                     Add to Cart
                   </button>
-                  {/* Delete Product Button 
-                  <button
-                    onClick={() => deleteProduct(product._id)}
-                    className="flex-1 px-4 py-2 text-center bg-red-600 text-white text-sm font-medium rounded hover:bg-red-500 transition"
-                  >
-                    Delete
-                  </button>*/}
+                
                 </div>
               </div>
             </div>

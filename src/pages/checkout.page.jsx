@@ -1,44 +1,49 @@
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router";
+import { useSelector,useDispatch } from "react-redux";
 import CartItem from "@/components/CartItem";
 import ShippingAddressForm from "@/components/ShippingAddressForm";
 import { Card } from "@/components/ui/card";
+import { removeFromCart } from "@/lib/features/cartSlice";
 
 function CheckoutPage() {
   const cart = useSelector((state) => state.cart.cartItems);
+  const dispatch = useDispatch();
 
-  if (cart.length === 0) {
-    return <Navigate to="/" />;
-  }
+  const onRemove = (id) => {
+    dispatch(removeFromCart(id));
+  };
+
+
 
   // Calculate total price
   const total = cart.reduce(
     (sum, item) => sum + (item.product.price || 0) * (item.quantity || 1),
     0
   );
-
+ 
   return (
     <main className="px-4 md:px-16 min-h-screen py-8 bg-gray-50">
       <h2 className="text-4xl font-bold mb-8 text-center">Checkout</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        <section>
-          <Card className="p-6 mb-6 shadow-lg border rounded-lg">
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <Card className="p-6 mb-6 shadow-lg border rounded-lg">
             <h3 className="text-2xl font-bold mb-4 text-gray-800">
               Order Details
             </h3>
             <div className="space-y-4">
               {cart.map((item, index) => (
-                <CartItem key={index} item={item} />
+                <CartItem key={index} item={item} onRemove={onRemove} />
               ))}
             </div>
             <div className="mt-6 flex justify-between items-center border-t pt-4">
               <span className="text-lg font-semibold">Total:</span>
               <span className="text-xl font-bold text-blue-600">
-                ${total.toFixed(2)}
+                LKR {total.toFixed(2)}
               </span>
             </div>
           </Card>
-        </section>
+
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
         <section>
           <ShippingAddressForm />
         </section>

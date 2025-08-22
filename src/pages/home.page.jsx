@@ -5,21 +5,16 @@ import HeroGrid from "../components/HeroGrid";
 import ShopPage from "./shop.page";
 import CategoryButton from "@/components/CategoryButton";
 
-
-
-
-
 function HomePage() {
-   
   return (
     <>
-    <main>
-      <HeroGrid />
-      <CasualInspirations />
-      <CategoryButton />
-      <ColorButton />
-      <ShopPage />
-    </main>
+      <main>
+        <HeroGrid />
+        <CasualInspirations />
+        <CategoryButton />
+        <ColorButton />
+-       <ShopPage />
+      </main>
     </>
   );
 }

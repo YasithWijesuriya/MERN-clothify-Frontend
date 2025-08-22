@@ -21,6 +21,7 @@ import ProductView from './components/ProductView';
 import AboutUs from './components/AboutUs.jsx';
 import Contact from './components/ContactUs.jsx';
 import Gallery from './components/Gallery.jsx';
+import OrderConfirmation from './components/orderConfirmation';
 
  // Import your Publishable Key
   const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -38,6 +39,8 @@ createRoot(document.getElementById('root')).render(
 
         {/* Root layout for common header/footer */}
         <Route element={<RootLayout />}>
+
+          {/* Home page */}
           <Route path="/" element={<HomePage />}>
 
             {/* Specific Shop sub-routes */}
@@ -45,13 +48,10 @@ createRoot(document.getElementById('root')).render(
             <Route path="shop/:category" element={<ShopPage />} /> {/* Category only */}
             <Route path="shop" element={<ShopPage />} /> 
 
-
-            {/* All products */}
-
           </Route>
             <Route path="About" element={<AboutUs />} />
             <Route path="Contact" element={<Contact />} />
-          <Route path="Gallery" element={<Gallery />} /> {/* Gallery page */}
+            <Route path="Gallery" element={<Gallery />} /> {/* Gallery page */}
             <Route path="shop/cart" element={<CartPage />} /> {/* Cart page */}
 
           {/* Product detail */}
@@ -64,7 +64,9 @@ createRoot(document.getElementById('root')).render(
 
         {/* Protected routes (user must be logged in) */}
         <Route element={<ProtectedLayout />}>
-          <Route path="shop/checkout" element={<CheckoutPage />} />
+          <Route path="shop/checkout" element={<CheckoutPage />}/>
+            <Route path="/shop/checkout/order-confirmation/:id" element={<OrderConfirmation />} />
+
 
           {/* Admin protected routes */}
           <Route element={<AdminProtectedLayout />}>

@@ -28,10 +28,11 @@ export const api = createApi({
 
 
     getAllProducts: build.query({
-      query: ({ categorySlug, colorSlug } = {}) => {
+      query: ({ categorySlug, colorSlug ,sortByPrice } = {}) => {
         const params = new URLSearchParams();
         if (categorySlug) params.append('categorySlug', categorySlug.toLowerCase());
         if (colorSlug) params.append('colorSlug', colorSlug.toLowerCase());
+        if (sortByPrice) params.append('sortByPrice', sortByPrice);
         const qs = params.toString();
         return `/products${qs ? `?${qs}` : ''}`;
       },
