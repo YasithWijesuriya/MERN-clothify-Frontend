@@ -68,6 +68,7 @@ export const api = createApi({
                 ]
               : [{ type: 'Reviews', id: productId }],
       }),
+    
 
     getColors: build.query({
           query: () => '/colors',
@@ -83,6 +84,13 @@ export const api = createApi({
 
     getMyOrdersByUser: build.query({
       query: () => "/orders/my-orders",
+    }),
+    getAllGalleryItems: build.query({
+      query: () => "/gallery",
+      providesTags: (result = []) => [
+        ...result.map(({ _id }) => ({ type: 'Gallery', id: _id })),
+        { type: 'Gallery', id: 'LIST' },
+      ],
     }),
     createProduct: build.mutation({
           query: (productData) => ({
@@ -111,6 +119,14 @@ export const api = createApi({
             { type: 'Reviews', id: arg.productId },
           ],
     }),
+    createGalleryItem: build.mutation({
+      query: (galleryItemData) => ({
+        url: '/gallery',
+        method: 'POST',
+        body: galleryItemData,
+      }),
+      invalidatesTags: [{ type: 'Gallery', id: 'LIST' }],
+    }),
 
     deleteProduct: build.mutation({
           query: (productId) => ({
@@ -130,6 +146,16 @@ export const api = createApi({
             }),
             invalidatesTags: (result, error, { productId }) => 
           [{ type: 'Reviews', id: productId }],
+    }),
+    deleteGalleryItem: build.mutation({
+      query: (galleryItemId) => ({
+        url: `/gallery/${galleryItemId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (result, error, galleryItemId) => 
+        [{ type: 'Gallery', id: galleryItemId },
+          { type: 'Gallery', id: 'LIST' },
+        ],
     }),
     getDailySales: build.query({
         queryFn: async (days, _queryApi, _extraOptions, fetchWithBQ) => {
@@ -159,7 +185,10 @@ export const {
   useGetColorsQuery,
   useGetMyOrdersByUserQuery,
   useGetAllOrdersQuery,
-  useGetDailySalesQuery
+  useGetDailySalesQuery,
+  useGetAllGalleryItemsQuery,
+  useCreateGalleryItemMutation,
+  useDeleteGalleryItemMutation
 } = api;
 
 

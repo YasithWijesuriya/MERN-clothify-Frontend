@@ -22,7 +22,7 @@ export default function Navigation() {
         {/* Desktop Menu */}
         <nav className="hidden md:flex space-x-6 items-center">
           <Link to="/" className="font-medium hover:text-gray-600">Home</Link>
-          <Link to="/Gallery" className="font-medium hover:text-gray-600">Gallery</Link>
+          <Link to="/gallery" className="font-medium hover:text-gray-600">Gallery</Link>
           <Link to="/About" className="font-medium hover:text-gray-600">About Us</Link>
           <Link to="/Contact" className="font-medium hover:text-gray-600">Contact</Link>
           <Link to="/my-orders" className="font-medium hover:text-gray-600">My Orders</Link>
@@ -93,7 +93,7 @@ export default function Navigation() {
         <div className="md:hidden bg-white border-t border-gray-200 shadow-md">
           <nav className="flex flex-col space-y-2 px-4 py-4">
             <Link to="/" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">Home</Link>
-            <Link to="/Gallery" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">Gallery</Link>
+            <Link to="/gallery" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">Gallery</Link>
             <Link to="/About" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">About Us</Link>
             <Link to="/Contact" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">Contact</Link>
             <Link to="/my-orders" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">My Orders</Link>

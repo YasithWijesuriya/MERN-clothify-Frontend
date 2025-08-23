@@ -26,8 +26,9 @@ import MyOrders from './components/MyOrders';
 import AdminOrders from './components/adminOrders';
 import SalesDashboard from './components/AdminDailySalesDashboard';
 
+
  // Import your Publishable Key
-  const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+  const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
   if (!PUBLISHABLE_KEY) {
     throw new Error('Add your Clerk Publishable Key to the .env file')
@@ -66,8 +67,9 @@ createRoot(document.getElementById('root')).render(
           {/* Auth routes */}
           <Route path="sign-in" element={<SignInPage />} />
           <Route path="sign-up" element={<SignUpPage />} />
-          
 
+           {/* Gallery */}
+           <Route path="/gallery" element={<Gallery />} />
         {/* Protected routes (user must be logged in) */}
         <Route element={<ProtectedLayout />}>
           <Route path="shop/checkout" element={<CheckoutPage />}/>
