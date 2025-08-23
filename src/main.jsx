@@ -22,6 +22,9 @@ import AboutUs from './components/AboutUs.jsx';
 import Contact from './components/ContactUs.jsx';
 import Gallery from './components/Gallery.jsx';
 import OrderConfirmation from './components/orderConfirmation';
+import MyOrders from './components/MyOrders';
+import AdminOrders from './components/adminOrders';
+import SalesDashboard from './components/AdminDailySalesDashboard';
 
  // Import your Publishable Key
   const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -53,6 +56,9 @@ createRoot(document.getElementById('root')).render(
             <Route path="Contact" element={<Contact />} />
             <Route path="Gallery" element={<Gallery />} /> {/* Gallery page */}
             <Route path="shop/cart" element={<CartPage />} /> {/* Cart page */}
+             {/* Orders */}
+             <Route path="/my-orders" element={<MyOrders />} />
+             <Route path="/admin/orders" element={<AdminOrders />} />
 
           {/* Product detail */}
           <Route path="product/:productId" element={<ProductView />} />
@@ -60,7 +66,7 @@ createRoot(document.getElementById('root')).render(
           {/* Auth routes */}
           <Route path="sign-in" element={<SignInPage />} />
           <Route path="sign-up" element={<SignUpPage />} />
-
+          
 
         {/* Protected routes (user must be logged in) */}
         <Route element={<ProtectedLayout />}>
@@ -71,6 +77,7 @@ createRoot(document.getElementById('root')).render(
           {/* Admin protected routes */}
           <Route element={<AdminProtectedLayout />}>
             <Route path="admin/products/create" element={<CreateProductPage />} />
+            <Route path="admin/sales-dashboard" element={<SalesDashboard />} />
           </Route>
         </Route>
       </Route>

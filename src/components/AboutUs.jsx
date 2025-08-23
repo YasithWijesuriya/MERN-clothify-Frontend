@@ -3,7 +3,7 @@ export default function AboutUs() {
     <section className="max-w-5xl mx-auto px-6 py-16">
       <h1 className="text-4xl font-bold mb-6 text-gray-900">About Us</h1>
       <p className="text-lg text-gray-700 leading-relaxed mb-8">
-        Welcome to <span className="font-semibold">YourCompany</span>.  
+        Welcome to <span className="font-semibold">mebius</span>.  
         We are passionate about delivering high-quality products that
         bring value and satisfaction to our customers. With years of
         experience in the industry, we pride ourselves on innovation,

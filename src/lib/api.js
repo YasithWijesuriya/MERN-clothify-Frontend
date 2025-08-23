@@ -76,7 +76,14 @@ export const api = createApi({
             { type: 'Colors', id: 'LIST' },
           ],
     }),
+    getAllOrders:build.query({
+      query: () => `/orders`,
+      providesTags: ["Orders"],
+    }),
 
+    getMyOrdersByUser: build.query({
+      query: () => "/orders/my-orders",
+    }),
     createProduct: build.mutation({
           query: (productData) => ({
             url: '/products',
@@ -104,6 +111,7 @@ export const api = createApi({
             { type: 'Reviews', id: arg.productId },
           ],
     }),
+
     deleteProduct: build.mutation({
           query: (productId) => ({
             url: `/products/${productId}`,
@@ -123,6 +131,14 @@ export const api = createApi({
             invalidatesTags: (result, error, { productId }) => 
           [{ type: 'Reviews', id: productId }],
     }),
+    getDailySales: build.query({
+        queryFn: async (days, _queryApi, _extraOptions, fetchWithBQ) => {
+          // full URL override
+          const result = await fetchWithBQ(`/orders/daily-sales?days=${days}`);
+          return result.error ? { error: result.error } : { data: result.data };
+        },
+  }),
+
   }),
 })
   
@@ -141,6 +157,9 @@ export const {
   useDeleteProductMutation,
   useDeleteReviewMutation,
   useGetColorsQuery,
+  useGetMyOrdersByUserQuery,
+  useGetAllOrdersQuery,
+  useGetDailySalesQuery
 } = api;
 
 

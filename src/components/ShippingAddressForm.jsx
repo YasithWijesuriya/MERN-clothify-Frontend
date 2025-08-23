@@ -17,6 +17,8 @@ import { useCreateOrderMutation } from "@/lib/api";
 import { useSelector, useDispatch } from "react-redux";
 import { clearCart } from "@/lib/features/cartSlice";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
+
 
 const shippingAddressSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
@@ -33,6 +35,7 @@ const shippingAddressSchema = z.object({
 });
 
 function ShippingAddressForm() {
+  const { user } = useUser();
   const form = useForm({
     resolver: zodResolver(shippingAddressSchema),
     // zodResolver එක shippingAddressSchema use කරල auto validation කරන්න කියන එක.  
@@ -78,11 +81,10 @@ function ShippingAddressForm() {
         // IMPORTANT: do NOT send full card numbers to your DB in production.
         // Use a payment gateway (Stripe Checkout/PaymentIntent) instead.
       }
-
       // prepare payload
       const orderPayload = {
         // if you have auth, replace with real userId
-        userId: null,
+        userId: user?.id||null,
         items: cart.map((item) => ({
           productId: item.product._id,
           quantity: item.quantity,
@@ -108,10 +110,9 @@ function ShippingAddressForm() {
       const orderId = result.orderId || result._id || result.id;
       console.log("Navigating to:", `/order-confirmation/${orderId}`);
 
-      // clear cart
+      
       dispatch(clearCart());
 
-      // redirect to confirmation page; send total and paymentMethod via location state
       navigate(`order-confirmation/${orderId}`, {
         state: {
           totalPrice,
@@ -331,7 +332,7 @@ function ShippingAddressForm() {
           {/* total summary */}
           <div className="mt-2">
             <p className="font-medium">Cart total: LKR {cartTotal.toFixed(2)}</p>
-            <p className="font-medium">Payment fee: LKR {extraFee}</p>
+            <p className="font-medium">Delivery fee: LKR {extraFee}</p>
             <p className="text-lg font-bold">Total: LKR {totalPrice.toFixed(2)}</p>
           </div>
 

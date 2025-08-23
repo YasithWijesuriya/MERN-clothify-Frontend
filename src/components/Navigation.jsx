@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, ShoppingBag, Search, User, BellIcon } from "lucide-react";
+import { Menu, X, ShoppingBag, Search, User, BellIcon ,ChartSpline} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/clerk-react";
@@ -15,16 +15,17 @@ export default function Navigation() {
     <header className="bg-white border-b border-gray-200 shadow-md">
       <div className="container mx-auto px-4 lg:px-16 flex items-center justify-between h-16">
         {/* Logo */}
-        <Link to="/" className="font-bold text-xl md:text-2xl">
+        <Link to="/" className="font-bold text-xl md:text-2xl mr-15">
           Mebius
         </Link>
 
         {/* Desktop Menu */}
-        <nav className="hidden md:flex space-x-8 items-center">
+        <nav className="hidden md:flex space-x-6 items-center">
           <Link to="/" className="font-medium hover:text-gray-600">Home</Link>
           <Link to="/Gallery" className="font-medium hover:text-gray-600">Gallery</Link>
           <Link to="/About" className="font-medium hover:text-gray-600">About Us</Link>
           <Link to="/Contact" className="font-medium hover:text-gray-600">Contact</Link>
+          <Link to="/my-orders" className="font-medium hover:text-gray-600">My Orders</Link>
 
           {user?.publicMetadata?.role === "admin" && (
             <>
@@ -35,10 +36,18 @@ export default function Navigation() {
                 Create Product
               </Link>
               <Link
-                to="/admin/get-orders"
-                className="font-medium hover:text-gray-600"
+                to="/admin/orders"
+                className="font-medium hover:text-gray-600 flex   bg-black text-white px-3 py-1 rounded-lg text-sm space-x-1"
               >
-                <BellIcon />
+                 <BellIcon size={20} />
+                <span >AllOrders</span>
+                
+              </Link>
+              <Link
+                to="/admin/sales-dashboard"
+                className="font-medium hover:text-gray-600 bg-black text-white px-3 py-1 rounded-lg text-sm"
+              >
+                <ChartSpline size={20} />
               </Link>
             </>
           )}
@@ -87,6 +96,7 @@ export default function Navigation() {
             <Link to="/Gallery" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">Gallery</Link>
             <Link to="/About" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">About Us</Link>
             <Link to="/Contact" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">Contact</Link>
+            <Link to="/my-orders" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">My Orders</Link>
 
            {user?.publicMetadata?.role === "admin" && (
               <div className="flex space-x-2">
@@ -101,12 +111,19 @@ export default function Navigation() {
 
                 {/* Orders Button with Bell Icon */}
                 <Link
-                  to="/admin/get-orders"
+                  to="/admin/orders"
                   onClick={() => setIsMenuOpen(false)}
                   className="flex items-center justify-center font-medium hover:text-white bg-black text-white px-3 py-1 rounded text-sm space-x-1"
                 >
                   <BellIcon size={16} />
-                  <span>Orders</span>
+                  <span>AllOrders</span>
+                </Link>
+                <Link
+                  to="/admin/sales-dashboard"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center justify-center font-medium hover:text-white bg-black text-white px-3 py-1 rounded text-sm"
+                >
+                  <ChartSpline size={16} />
                 </Link>
               </div>
             )}

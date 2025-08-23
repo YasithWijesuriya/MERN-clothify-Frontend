@@ -102,18 +102,20 @@ export default function ProductReviews({ productId }) {
                   <span className="text-yellow-500">⭐ {r.rating}</span>
 
                   {/* Delete button only for owner */}
-                  {isSignedIn && r.userId === user?.id && (
+                  {(user?.publicMetadata?.role === "admin" || // admin can delete any review
+                    (isSignedIn && r.userId === user?.id)    // regular user can delete only their own review
+                  ) && (
                     <button
                       onClick={() => handleDeleteReview(r._id)}
                       disabled={isDeleting}
                       className={`p-1 rounded-full hover:bg-gray-100 transition ${
                         isDeleting ? "opacity-50 cursor-not-allowed" : ""
                       }`}
-                      title="Delete my review"
+                      title="Delete review"
                     >
                       <Trash2 className="w-4 h-4 text-red-600" />
                     </button>
-                  )}
+                    )}
                 </div>
               </div>
               <p className="text-sm mt-1">{r.review}</p>
