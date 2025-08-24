@@ -1,9 +1,8 @@
 import ColorButton from "@/components/ColorButton";
 import CasualInspirations from "../components/CasualInspirations";
 import HeroGrid from "../components/HeroGrid";
-// import TrendingSection from "../components/TrendingSection";
-import ShopPage from "./shop.page";
 import CategoryButton from "@/components/CategoryButton";
+import { Outlet } from "react-router-dom";
 
 function HomePage() {
   return (
@@ -13,8 +12,9 @@ function HomePage() {
         <CasualInspirations />
         <CategoryButton />
         <ColorButton />
-        <ShopPage />
-       
+
+        
+        <Outlet />
       </main>
     </>
   );
