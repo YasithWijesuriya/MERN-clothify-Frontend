@@ -23,7 +23,7 @@ import Contact from './components/ContactUs.jsx';
 import Gallery from './components/Gallery.jsx';
 import OrderConfirmation from './components/orderConfirmation';
 import MyOrders from './components/MyOrders';
-import AdminOrders from './components/adminOrders';
+import AdminOrders from './components/AdminOrders';
 import SalesDashboard from './components/AdminDailySalesDashboard';
 
 
