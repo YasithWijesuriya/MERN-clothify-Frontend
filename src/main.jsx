@@ -53,13 +53,15 @@ createRoot(document.getElementById('root')).render(
             <Route path="shop" element={<ShopPage />} /> 
 
           </Route>
+          <Route pathe="/">
             <Route path="About" element={<AboutUs />} />
             <Route path="Contact" element={<Contact />} />
             <Route path="Gallery" element={<Gallery />} /> {/* Gallery page */}
             <Route path="shop/cart" element={<CartPage />} /> {/* Cart page */}
              {/* Orders */}
-             <Route path="/my-orders" element={<MyOrders />} />
-             <Route path="/admin/orders" element={<AdminOrders />} />
+             <Route path="my-orders" element={<MyOrders />} />
+             <Route path="admin/orders" element={<AdminOrders />} />
+          </Route>
 
           {/* Product detail */}
           <Route path="product/:productId" element={<ProductView />} />

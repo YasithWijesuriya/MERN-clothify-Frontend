@@ -35,7 +35,7 @@ function ImageInput({ onChange, value }) {
           fontFamily: "inherit",
         }}
       >
-        {/* Don't pass value to file input */}
+        
         <Input type="file" onChange={handleFileChange} accept="image/*" />
         {value && (
           <div className="mt-2 text-sm text-green-600">✓ Image uploaded successfully</div>

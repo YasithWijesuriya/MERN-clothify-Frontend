@@ -7,23 +7,23 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/api",
     prepareHeaders: async (headers) => {
-      return new Promise((resolve) => {
-        async function checkToken() {
-          const clerk = window.Clerk;
-          if (clerk) {
-            const token = await clerk.session?.getToken();
-            headers.set("Authorization", `Bearer ${token}`);
-            resolve(headers);
-          } else {
-            setTimeout(checkToken, 500);
-          }
-
+      try {
+        const clerk = window.Clerk;
+        if (!clerk || !clerk.session) {
+          return headers;
         }
-        checkToken();
-      });
+        const token = await clerk.session.getToken();
+        if (token) {
+          headers.set("Authorization", `Bearer ${token}`);
+        }
+        return headers;
+      } catch (error) {
+        console.error("Error setting auth header:", error);
+        return headers;
+      }
     },
   }),
-   tagTypes: ['Products','Reviews'],
+   tagTypes: ['Products', 'Reviews', 'Orders', 'Gallery'],
   endpoints: (build) => ({
 
 
@@ -84,6 +84,16 @@ export const api = createApi({
 
     getMyOrdersByUser: build.query({
       query: () => "/orders/my-orders",
+      transformResponse: (response) => {
+        if (response.status === 'success') {
+          return response;
+        }
+        throw new Error(response.message || 'Failed to fetch orders');
+      },
+      transformErrorResponse: (error) => ({
+        status: error.status,
+        message: error.data?.message || 'Failed to load orders'
+      })
     }),
     getAllGalleryItems: build.query({
       query: () => "/gallery",

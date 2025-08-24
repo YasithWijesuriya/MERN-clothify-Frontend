@@ -13,7 +13,8 @@ function HomePage() {
         <CasualInspirations />
         <CategoryButton />
         <ColorButton />
--       <ShopPage />
+        <ShopPage />
+       
       </main>
     </>
   );

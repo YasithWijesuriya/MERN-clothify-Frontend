@@ -23,9 +23,9 @@ function GalleryImageInput({ onChange, value }) {
         return;
       }
       
-      // Validate URL before calling onChange
+      
       try {
-        new URL(publicUrl); // Check if valid URL
+        new URL(publicUrl); 
         onChange(publicUrl);
       } catch (urlError) {
         setUploadError("Invalid image URL received from server");
@@ -45,7 +45,7 @@ function GalleryImageInput({ onChange, value }) {
       <Input 
         type="file" 
         onChange={handleFileChange} 
-        accept="image/*" // Fixed typo from images/* to image/*
+        accept="image/*" 
         className="cursor-pointer"
         disabled={isUploading}
       />

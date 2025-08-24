@@ -60,30 +60,29 @@ function ShippingAddressForm() {
   const navigate = useNavigate();
 
   const paymentMethod = form.watch("paymentMethod");
-  // compute cart base total (ensure product.price exists)
+  
   const cartTotal = cart.reduce((acc, item) => {
     const price = Number(item.product?.price ?? 0);
     return acc + price * (Number(item.quantity) || 0);
   }, 0);
 
-  // extra fee LKR 400 when any payment selected (as you specified)
+  
   const extraFee = ["CREDIT_CARD", "COD", "ONLINE"].includes(paymentMethod) ? 400 : 0;
   const totalPrice = cartTotal + extraFee;
 
   async function onSubmit(values) {
     try {
-      // runtime validation for card details if credit card selected
+      
       if (values.paymentMethod === "CREDIT_CARD") {
         if (!values.cardNumber || !values.cardExpiry || !values.cardCvc) {
           form.setError("cardNumber", { type: "manual", message: "Enter card details" });
           return;
         }
-        // IMPORTANT: do NOT send full card numbers to your DB in production.
-        // Use a payment gateway (Stripe Checkout/PaymentIntent) instead.
+       
       }
-      // prepare payload
+     
       const orderPayload = {
-        // if you have auth, replace with real userId
+        
         userId: user?.id||null,
         items: cart.map((item) => ({
           productId: item.product._id,
@@ -128,7 +127,7 @@ function ShippingAddressForm() {
       });
     } catch (err) {
       console.error("Order creation failed:", err);
-      // show UI error - you can use toast or form.setError
+      
     }
   }
 

@@ -20,7 +20,6 @@ function ColorButton() {
   
 
 
-  // ensure query hook receives params (so products list updates)
   useGetAllProductsQuery({
     categorySlug: category,
     colorSlug: colorSlug,
