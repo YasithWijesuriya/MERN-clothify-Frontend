@@ -13,7 +13,7 @@ const createReviewSchema = z.object({
   rating: z.number().min(1).max(5),
 });
 
-export default function ProductReviews({ productId }) {
+export default function CreateReviewForm({ productId }) {
   const { isSignedIn, user } = useUser();
 
   const form = useForm({
