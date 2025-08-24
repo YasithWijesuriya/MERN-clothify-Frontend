@@ -5,7 +5,7 @@ import { useGetAllProductsQuery } from "@/lib/api"
 import { useDispatch } from "react-redux"
 import { addToCart } from "@/lib/features/cartSlice"
 import { ArrowLeft, Star } from "lucide-react"
-import CreateReviewForm from "./CreateReviewForm"
+import CreateReviewForm from "@/components/CreateReviewForm"
 
 export default function ProductView() {
   const { productId } = useParams()
