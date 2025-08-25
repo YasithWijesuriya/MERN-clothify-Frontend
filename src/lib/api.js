@@ -167,7 +167,6 @@ export const api = createApi({
     }),
     getDailySales: build.query({
         queryFn: async (days, _queryApi, _extraOptions, fetchWithBQ) => {
-          // full URL override
           const result = await fetchWithBQ(`/orders/daily-sales?days=${days}`);
           return result.error ? { error: result.error } : { data: result.data };
         },
@@ -177,8 +176,6 @@ export const api = createApi({
 })
   
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
 export const { 
   useGetAllProductsQuery,
   useGetProductsByCategoryQuery,

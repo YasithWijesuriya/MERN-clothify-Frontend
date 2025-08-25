@@ -102,10 +102,14 @@ const ShopPage = ({ showHero = false, showInspiration = false }) => {
 
   return (
     <div className="p-6">
+
+
       {showHero && <HeroGrid />}
       {showInspiration && <CasualInspirations />}
       <CategoryButton />
       <ColorButton />
+
+
       <PriceSort sortByPrice={sortByPrice} setSortByPrice={setSortByPrice} />
       {!filteredProducts || filteredProducts.length === 0 ? (
         <p className="text-center text-gray-500 text-lg">

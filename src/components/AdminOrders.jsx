@@ -1,6 +1,6 @@
 import React from "react";
 import { useGetAllOrdersQuery } from "@/lib/api";
-import { Card, CardContent } from "@/components/ui/card"; // ShadCN card
+import { Card, CardContent } from "@/components/ui/card"; 
 import { Loader2, CheckCircle, XCircle, Truck } from "lucide-react";
 
 const AdminOrders = () => {
