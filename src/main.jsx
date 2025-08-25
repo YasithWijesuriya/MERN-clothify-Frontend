@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { store } from './lib/store';
 import { Provider } from 'react-redux';
 import { ClerkProvider } from '@clerk/clerk-react';
@@ -38,7 +38,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
       <Provider store={store}>
-        <BrowserRouter>
+        <HashRouter>
           <Routes>
             <Route element={<RootLayout />}>
               {/* Home */}
@@ -79,7 +79,7 @@ createRoot(document.getElementById('root')).render(
               </Route>
             </Route>
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
       </Provider>
     </ClerkProvider>
   </StrictMode>,
