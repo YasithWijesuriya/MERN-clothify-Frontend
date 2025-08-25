@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useSelector,useDispatch } from "react-redux";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import CartItem from "@/components/CartItem";
 import { removeFromCart } from "@/lib/features/cartSlice";
 
