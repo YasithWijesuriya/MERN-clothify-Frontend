@@ -1,6 +1,6 @@
 // src/pages/ShopPage.jsx
 import React, { useState} from "react";
-import { Link, useParams} from "react-router-dom";
+import { Link, useParams, useLocation} from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/lib/features/cartSlice";
 import { useGetAllProductsQuery,useDeleteProductMutation } from "../lib/api";
@@ -11,9 +11,13 @@ import PriceSort from "@/components/SortProductByPrice";
 
 const ShopPage = () => {
   const { category, productId ,categorySlug,colorSlug} = useParams();
+  const location = useLocation();
   const [imageErrors, setImageErrors] = useState(new Set());
    const [sortByPrice, setSortByPrice] = useState("");
   const dispatch = useDispatch(); // it's use for dispatch to the action redux store
+
+  // Check if this is being rendered on the home page
+  const isOnHomePage = location.pathname === "/";
 
   const {
     data: products,
@@ -93,7 +97,16 @@ const ShopPage = () => {
     : products;
 
   return (
-    <div className="p-6">
+    <div className={`${isOnHomePage ? 'px-6' : 'p-6'}`}>
+      {/* Only show title and sort when not on home page */}
+      {!isOnHomePage && (
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">
+            {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Products` : 'All Products'}
+          </h1>
+        </div>
+      )}
+      
       <PriceSort sortByPrice={sortByPrice} setSortByPrice={setSortByPrice} />
       {!filteredProducts || filteredProducts.length === 0 ? (
         <p className="text-center text-gray-500 text-lg">

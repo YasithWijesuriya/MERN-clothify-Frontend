@@ -13,7 +13,10 @@ function HomePage() {
         <CasualInspirations />
         <CategoryButton />
         <ColorButton />
--       <ShopPage />
+        {/* Shop section integrated directly without routing conflicts */}
+        <div className="mt-16">
+          <ShopPage />
+        </div>
       </main>
     </>
   );

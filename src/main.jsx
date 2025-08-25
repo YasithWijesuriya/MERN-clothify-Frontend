@@ -43,46 +43,44 @@ createRoot(document.getElementById('root')).render(
 
         {/* Root layout for common header/footer */}
         <Route element={<RootLayout />}>
-
+          
           {/* Home page */}
-          <Route path="/" element={<HomePage />}>
-
-            {/* Specific Shop sub-routes */}
-            <Route path="shop/:category/:colorSlug?" element={<ShopPage />} /> {/* Category + Color */}
-            <Route path="shop/:category" element={<ShopPage />} /> {/* Category only */}
-            <Route path="shop" element={<ShopPage />} /> 
-
-          </Route>
-            <Route path="About" element={<AboutUs />} />
-            <Route path="Contact" element={<Contact />} />
-            <Route path="Gallery" element={<Gallery />} /> {/* Gallery page */}
-            <Route path="shop/cart" element={<CartPage />} /> {/* Cart page */}
-             {/* Orders */}
-             <Route path="my-orders" element={<MyOrders />} />
-             <Route path="admin/orders" element={<AdminOrders />} />
-
+          <Route path="/" element={<HomePage />} />
+          
+          {/* Shop routes - flattened for better deployment compatibility */}
+          <Route path="shop" element={<ShopPage />} />
+          <Route path="shop/:category" element={<ShopPage />} />
+          <Route path="shop/:category/:colorSlug" element={<ShopPage />} />
+          
+          {/* Static pages */}
+          <Route path="about" element={<AboutUs />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="gallery" element={<Gallery />} />
+          
+          {/* Cart and checkout */}
+          <Route path="cart" element={<CartPage />} />
+          
           {/* Product detail */}
           <Route path="product/:productId" element={<ProductView />} />
-
+          
           {/* Auth routes */}
           <Route path="sign-in" element={<SignInPage />} />
           <Route path="sign-up" element={<SignUpPage />} />
 
-           {/* Gallery */}
-           <Route path="/gallery" element={<Gallery />} />
-        {/* Protected routes (user must be logged in) */}
-        <Route element={<ProtectedLayout />}>
-          <Route path="shop/checkout" element={<CheckoutPage />}/>
-            <Route path="/shop/checkout/order-confirmation/:id" element={<OrderConfirmation />} />
-
-
-          {/* Admin protected routes */}
-          <Route element={<AdminProtectedLayout />}>
-            <Route path="admin/products/create" element={<CreateProductPage />} />
-            <Route path="admin/sales-dashboard" element={<SalesDashboard />} />
+          {/* Protected routes (user must be logged in) */}
+          <Route element={<ProtectedLayout />}>
+            <Route path="checkout" element={<CheckoutPage />} />
+            <Route path="checkout/order-confirmation/:id" element={<OrderConfirmation />} />
+            <Route path="my-orders" element={<MyOrders />} />
+            
+            {/* Admin protected routes */}
+            <Route element={<AdminProtectedLayout />}>
+              <Route path="admin/products/create" element={<CreateProductPage />} />
+              <Route path="admin/orders" element={<AdminOrders />} />
+              <Route path="admin/sales-dashboard" element={<SalesDashboard />} />
+            </Route>
           </Route>
         </Route>
-      </Route>
 
       </Routes>
     </BrowserRouter>
