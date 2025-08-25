@@ -1,28 +1,25 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+
 //client-side data fetching with Redux Toolkit Query (RTK Query)
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/api",
-    prepareHeaders: async (headers) => {
-      try {
-        const clerk = window.Clerk;
-        if (!clerk || !clerk.session) {
-          return headers;
-        }
-        const token = await clerk.session.getToken();
-        if (token) {
-          headers.set("Authorization", `Bearer ${token}`);
-        }
-        return headers;
-      } catch (error) {
-        console.error("Error setting auth header:", error);
-        return headers;
-      }
-    },
-  }),
+  baseUrl: import.meta.env.VITE_API_URL,
+  prepareHeaders: async (headers) => {
+    try {
+      const clerk = window.Clerk;
+      if (!clerk || !clerk.session) return headers;
+      const token = await clerk.session.getToken();
+      if (token) headers.set("Authorization", `Bearer ${token}`);
+      return headers;
+    } catch (error) {
+      console.error("Error setting auth header:", error);
+      return headers;
+    }
+  },
+}),
    tagTypes: ['Products', 'Reviews', 'Orders', 'Gallery'],
   endpoints: (build) => ({
 
