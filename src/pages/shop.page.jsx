@@ -7,9 +7,13 @@ import { useGetAllProductsQuery,useDeleteProductMutation } from "../lib/api";
 import { Trash2 } from "lucide-react";
 import {useUser} from "@clerk/clerk-react";
 import PriceSort from "@/components/SortProductByPrice";
+import ColorButton from "@/components/ColorButton";
+import CategoryButton from "@/components/CategoryButton";
+import CasualInspirations from "../components/CasualInspirations";
+import HeroGrid from "../components/HeroGrid";
 
 
-const ShopPage = () => {
+const ShopPage = ({ showHero = false, showInspiration = false }) => {
   const { category, productId ,categorySlug,colorSlug} = useParams();
   const [imageErrors, setImageErrors] = useState(new Set());
    const [sortByPrice, setSortByPrice] = useState("");
@@ -37,6 +41,9 @@ const ShopPage = () => {
 
   if (isLoading) {
   return (
+    
+
+    
     <div className="flex justify-center items-center mt-20">
       <div className="w-10 h-10 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
       <span className="ml-3 text-gray-600 text-sm font-medium">Loading products...</span>
@@ -47,6 +54,7 @@ const ShopPage = () => {
   if (error) {
   return (
     <div className="flex flex-col items-center justify-center mt-20">
+      
       <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-md max-w-md text-center">
         <p className="font-semibold text-lg">⚠️ Failed to load products</p>
         <p className="text-sm mt-1">Please try refreshing the page or check your connection.</p>
@@ -94,6 +102,10 @@ const ShopPage = () => {
 
   return (
     <div className="p-6">
+      {showHero && <HeroGrid />}
+      {showInspiration && <CasualInspirations />}
+      <CategoryButton />
+      <ColorButton />
       <PriceSort sortByPrice={sortByPrice} setSortByPrice={setSortByPrice} />
       {!filteredProducts || filteredProducts.length === 0 ? (
         <p className="text-center text-gray-500 text-lg">
