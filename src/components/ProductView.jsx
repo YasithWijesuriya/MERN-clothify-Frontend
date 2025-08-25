@@ -76,6 +76,9 @@ export default function ProductView() {
               <p className="text-lg font-semibold text-blue-600">
                 LKR {product.price.toLocaleString()}
               </p>
+               <p className="text-[16px] font-semibold text-red-500">
+                Available Stock: {product.stock}
+              </p>
               <p className="text-sm text-gray-600">{product.description}</p>
 
 

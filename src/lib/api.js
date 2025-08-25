@@ -1,4 +1,3 @@
-// Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 //client-side data fetching with Redux Toolkit Query (RTK Query)
@@ -7,26 +6,26 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/api",
     prepareHeaders: async (headers) => {
-      return new Promise((resolve) => {
-        async function checkToken() {
-          const clerk = window.Clerk;
-          if (clerk) {
-            const token = await clerk.session?.getToken();
-            headers.set("Authorization", `Bearer ${token}`);
-            resolve(headers);
-          } else {
-            setTimeout(checkToken, 500);
-          }
 
+      try {
+        const clerk = window.Clerk;
+        if (!clerk || !clerk.session) {
+          return headers;
         }
-        checkToken();
-      });
+        const token = await clerk.session.getToken();
+        if (token) {
+          headers.set("Authorization", `Bearer ${token}`);
+        }
+       
+        return headers;
+      } catch (error) {
+        console.error("Error setting auth header:", error);
+        return headers;
+      }
     },
   }),
-   tagTypes: ['Products','Reviews'],
+   tagTypes: ['Products', 'Reviews', 'Orders', 'Gallery'],
   endpoints: (build) => ({
-
-
     getAllProducts: build.query({
       query: ({ categorySlug, colorSlug ,sortByPrice } = {}) => {
         const params = new URLSearchParams();
@@ -68,7 +67,7 @@ export const api = createApi({
                 ]
               : [{ type: 'Reviews', id: productId }],
       }),
-    
+
 
     getColors: build.query({
           query: () => '/colors',
@@ -81,9 +80,18 @@ export const api = createApi({
       query: () => `/orders`,
       providesTags: ["Orders"],
     }),
-
     getMyOrdersByUser: build.query({
       query: () => "/orders/my-orders",
+      transformResponse: (response) => {
+        if (response.status === 'success') {
+          return response;
+        }
+        throw new Error(response.message || 'Failed to fetch orders');
+      },
+      transformErrorResponse: (error) => ({
+        status: error.status,
+        message: error.data?.message || 'Failed to load orders'
+      })
     }),
     getAllGalleryItems: build.query({
       query: () => "/gallery",
@@ -137,7 +145,7 @@ export const api = createApi({
             [{ type: 'Products', id: productId },
               {type:"products",id:"LIST"},
             ],
-        
+
     }),
     deleteReview: build.mutation({
             query: (reviewId) => ({
@@ -167,7 +175,7 @@ export const api = createApi({
 
   }),
 })
-  
+
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
@@ -190,5 +198,3 @@ export const {
   useCreateGalleryItemMutation,
   useDeleteGalleryItemMutation
 } = api;
-
-

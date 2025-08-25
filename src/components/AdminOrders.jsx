@@ -44,7 +44,7 @@ const AdminOrders = () => {
                 <span>{order.orderStatus}</span>
               </div>
 
-              <p>Total: ${order.totalPrice}</p>
+              <p>Total: LKR {order.totalPrice}</p>
 
               <div className="flex items-center space-x-2">
                 <span>Payment:</span>
