@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000"; // Add this at the top
+const BASE_URL = import.meta.env.VITE_API_URL; // Add this at the top
 
 export const putGalleryImage = async ({file}) => {
   try {
