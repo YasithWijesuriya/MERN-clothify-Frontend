@@ -37,54 +37,50 @@ if (!PUBLISHABLE_KEY) {
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-    <Provider store={store}>
+      <Provider store={store}>
         <BrowserRouter>
-      <Routes>
+          <Routes>
+            <Route element={<RootLayout />}>
+              {/* Home */}
+              <Route path="/" element={<HomePage />} />
 
-     <Route element={<RootLayout />}>
-  {/* Home page */}
-  <Route path="/" element={<HomePage />} />
+              {/* Shop */}
+              <Route path="shop" element={<ShopPage showHero={false} showInspiration={false} />} />
+              <Route path="shop/:category" element={<ShopPage showHero={false} showInspiration={false} />} />
+              <Route path="shop/:category/:colorSlug" element={<ShopPage showHero={false} showInspiration={false} />} />
 
-  {/* Shop routes */}
-  <Route path="shop" element={<ShopPage showHero={false} showInspiration={false} />} />
-  <Route path="shop/:category" element={<ShopPage showHero={false} showInspiration={false} />} />
-  <Route path="shop/:category/:colorSlug?" element={<ShopPage showHero={false} showInspiration={false} />} />
+              {/* Static */}
+              <Route path="about" element={<AboutUs />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="gallery" element={<Gallery />} />
 
-          
+              {/* Cart */}
+              <Route path="cart" element={<CartPage />} />
 
-  {/* Other pages */}
-  <Route path="about" element={<AboutUs />} />
-  <Route path="contact" element={<Contact />} />
-  <Route path="gallery" element={<Gallery />} />
-  <Route path="shop/cart" element={<CartPage />} /> 
-  <Route path="my-orders" element={<MyOrders />} />
-  <Route path="admin/orders" element={<AdminOrders />} />
-              
+              {/* Product detail */}
+              <Route path="product/:productId" element={<ProductView />} />
 
-  {/* Product detail */}
-  <Route path="product/:productId" element={<ProductView />} />
-              
+              {/* Auth */}
+              <Route path="sign-in" element={<SignInPage />} />
+              <Route path="sign-up" element={<SignUpPage />} />
 
-  {/* Auth */}
-  <Route path="sign-in" element={<SignInPage />} />
-  <Route path="sign-up" element={<SignUpPage />} />
-              
+              {/* Protected */}
+              <Route element={<ProtectedLayout />}>
+                <Route path="checkout" element={<CheckoutPage />} />
+                <Route path="checkout/order-confirmation/:id" element={<OrderConfirmation />} />
+                <Route path="my-orders" element={<MyOrders />} />
 
-  {/* Protected routes */}
-  <Route element={<ProtectedLayout />}>
-    <Route path="shop/checkout" element={<CheckoutPage />} />
-    <Route path="shop/checkout/order-confirmation/:id" element={<OrderConfirmation />} />
-
-    <Route element={<AdminProtectedLayout />}>
-      <Route path="admin/products/create" element={<CreateProductPage />} />
-      <Route path="admin/sales-dashboard" element={<SalesDashboard />} />
-    </Route>
-  </Route>
-</Route>
-      </Routes>
-    </BrowserRouter>
-    </Provider>
-           
+                {/* Admin */}
+                <Route element={<AdminProtectedLayout />}>
+                  <Route path="admin/products/create" element={<CreateProductPage />} />
+                  <Route path="admin/orders" element={<AdminOrders />} />
+                  <Route path="admin/sales-dashboard" element={<SalesDashboard />} />
+                </Route>
+              </Route>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </Provider>
     </ClerkProvider>
   </StrictMode>,
 );

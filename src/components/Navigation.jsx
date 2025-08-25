@@ -23,8 +23,8 @@ export default function Navigation() {
         <nav className="hidden md:flex space-x-6 items-center">
           <Link to="/" className="font-medium hover:text-gray-600">Home</Link>
           <Link to="/gallery" className="font-medium hover:text-gray-600">Gallery</Link>
-          <Link to="/About" className="font-medium hover:text-gray-600">About Us</Link>
-          <Link to="/Contact" className="font-medium hover:text-gray-600">Contact</Link>
+          <Link to="/about" className="font-medium hover:text-gray-600">About Us</Link>
+          <Link to="/contact" className="font-medium hover:text-gray-600">Contact</Link>
           <Link to="/my-orders" className="font-medium hover:text-gray-600">My Orders</Link>
 
           {user?.publicMetadata?.role === "admin" && (
@@ -59,7 +59,7 @@ export default function Navigation() {
             <Search size={20} />
           </button>
 
-          <Link to="/shop/cart" className="relative p-1">
+          <Link to="/cart" className="relative p-1">
             <ShoppingBag size={20} />
             {cartItemCount > 0 && (
               <span className="absolute -top-1 -right-1 bg-black text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
@@ -94,8 +94,8 @@ export default function Navigation() {
           <nav className="flex flex-col space-y-2 px-4 py-4">
             <Link to="/" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">Home</Link>
             <Link to="/gallery" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">Gallery</Link>
-            <Link to="/About" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">About Us</Link>
-            <Link to="/Contact" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">Contact</Link>
+            <Link to="/about" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">About Us</Link>
+            <Link to="/contact" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">Contact</Link>
             <Link to="/my-orders" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">My Orders</Link>
 
            {user?.publicMetadata?.role === "admin" && (

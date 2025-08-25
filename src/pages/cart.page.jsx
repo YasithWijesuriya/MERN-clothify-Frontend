@@ -26,7 +26,7 @@ function CartPage() {
           <div className="mt-4">
             {cart.length > 0 ? (
               <Button asChild>
-                <Link to="/shop/checkout">Proceed to Checkout</Link>
+                <Link to="/checkout">Proceed to Checkout</Link>
               </Button>
             ) : (
               <p>No items in cart</p>

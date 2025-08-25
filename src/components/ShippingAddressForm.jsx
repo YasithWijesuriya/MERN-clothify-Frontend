@@ -107,12 +107,12 @@ function ShippingAddressForm() {
 
       const result = await createOrder(orderPayload).unwrap();
       const orderId = result.orderId || result._id || result.id;
-      console.log("Navigating to:", `/order-confirmation/${orderId}`);
+      console.log("Navigating to:", `/checkout/order-confirmation/${orderId}`);
 
       
       dispatch(clearCart());
 
-      navigate(`order-confirmation/${orderId}`, {
+      navigate(`/checkout/order-confirmation/${orderId}`, {
         state: {
           totalPrice,
           paymentMethod: values.paymentMethod,
