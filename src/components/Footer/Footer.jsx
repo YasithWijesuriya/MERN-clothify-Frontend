@@ -31,7 +31,7 @@ function Footer() {
                         <ul className="space-y-2">
                             <li><a href="/" className="text-gray-400 hover:text-white transition-colors">Home</a></li>
                             <li><a href="/about" className="text-gray-400 hover:text-white transition-colors">About Us</a></li>
-                            <li><a href="/products" className="text-gray-400 hover:text-white transition-colors">Products</a></li>
+                            <li><a href="/shop" className="text-gray-400 hover:text-white transition-colors">Products</a></li>
                             <li><a href="/gallery" className="text-gray-400 hover:text-white transition-colors">Gallery</a></li>
                         </ul>
                     </div>
