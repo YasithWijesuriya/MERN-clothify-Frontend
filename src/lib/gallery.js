@@ -1,9 +1,24 @@
 const BASE_URL = import.meta.env.VITE_API_URL; // Add this at the top
 
+// Safely build API URLs without duplicating segments like "/api/api"
+function buildApiUrl(path) {
+  const base = BASE_URL || "";
+  const hasApiInBase = /\/(api)(\/|$)/.test(new URL(base, base.startsWith("http") ? undefined : "http://local").pathname);
+  const cleanedBase = base.replace(/\/$/, "");
+  const cleanedPath = path.replace(/^\//, "");
+  // If base already contains /api, don't prepend another /api
+  if (hasApiInBase && cleanedPath.startsWith("api/")) {
+    return `${cleanedBase}/${cleanedPath.replace(/^api\//, "")}`;
+  }
+  return `${cleanedBase}/${cleanedPath}`;
+}
+
 export const putGalleryImage = async ({file}) => {
   try {
+    const endpoint = buildApiUrl("/api/gallery/images");
+
     // First check if server is available
-    const res = await fetch(`${BASE_URL}/api/gallery/images`, {
+    const res = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,13 +46,12 @@ export const putGalleryImage = async ({file}) => {
     // Ensure URLs are absolute
     const fullPublicUrl = publicUrl.startsWith('http') 
       ? publicUrl 
-      : `${BASE_URL}${publicUrl}`;
+      : `${BASE_URL.replace(/\/$/, '')}${publicUrl.startsWith('/') ? '' : '/'}${publicUrl}`;
 
     const fullUploadUrl = url.startsWith('http') 
       ? url 
-      : `${BASE_URL}${url}`;
+      : `${BASE_URL.replace(/\/$/, '')}${url.startsWith('/') ? '' : '/'}${url}`;
 
-    // Upload to the signed URL
     const upload = await fetch(fullUploadUrl, {
       method: "PUT",
       headers: {
