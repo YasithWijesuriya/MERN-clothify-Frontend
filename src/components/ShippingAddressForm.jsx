@@ -27,11 +27,8 @@ const shippingAddressSchema = z.object({
   line_1: z.string().min(1, "Address line 1 is required"),
   line_2: z.string().optional(),
   city: z.string().min(1, "City is required"),
-  phone: z.string().min(1, "Phone number is required"),
+  phone: z.string().regex(/^\+?\d{10,15}$/, "Invalid phone number"),
   paymentMethod: z.enum(["CREDIT_CARD", "COD", "ONLINE"]),
-  cardNumber: z.string().optional(),
-  cardExpiry: z.string().optional(),
-  cardCvc: z.string().optional(),
 });
 
 function ShippingAddressForm() {
@@ -48,9 +45,6 @@ function ShippingAddressForm() {
       city: "",
       phone: "",
       paymentMethod: "COD",
-      cardNumber: "",
-      cardExpiry: "",
-      cardCvc: "",
     },
   });
 
@@ -73,14 +67,7 @@ function ShippingAddressForm() {
   async function onSubmit(values) {
     try {
       
-      if (values.paymentMethod === "CREDIT_CARD") {
-        if (!values.cardNumber || !values.cardExpiry || !values.cardCvc) {
-          form.setError("cardNumber", { type: "manual", message: "Enter card details" });
-          return;
-        }
-       
-      }
-     
+      
       const orderPayload = {
         
         userId: user?.id||null,
@@ -97,17 +84,20 @@ function ShippingAddressForm() {
           city: values.city,
           phone: values.phone,
         },
-        paymentMethod: values.paymentMethod,
-        paymentDetails:
-          values.paymentMethod === "CREDIT_CARD"
-            ? { last4: values.cardNumber.slice(-4), brand: "CARD" }
-            : {},
-        totalPrice,
-      };
+         paymentMethod: values.paymentMethod,
+    totalPrice,
+  };
 
-      const result = await createOrder(orderPayload).unwrap();
-      const orderId = result.orderId || result._id || result.id;
-      console.log("Navigating to:", `/checkout/order-confirmation/${orderId}`);
+  if (values.paymentMethod === "CREDIT_CARD") {
+    navigate("/checkout/card-payment", {
+      state: { orderPayload, totalPrice },
+    });
+    return;
+  }
+
+  const result = await createOrder(orderPayload).unwrap();
+  const orderId = result.orderId || result._id || result.id;
+  console.log("Navigating to:", `/checkout/order-confirmation/${orderId}`);
 
       
       dispatch(clearCart());
@@ -282,51 +272,6 @@ function ShippingAddressForm() {
               </FormItem>
             )}
           />
-
-          {/* credit card fields (conditionally) */}
-          {paymentMethod === "CREDIT_CARD" && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <FormField
-                control={form.control}
-                name="cardNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Card Number</FormLabel>
-                    <FormControl>
-                      <Input placeholder="4242 4242 4242 4242" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="cardExpiry"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Expiry (MM/YY)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="12/34" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="cardCvc"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>CVC</FormLabel>
-                    <FormControl>
-                      <Input placeholder="123" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          )}
 
           {/* total summary */}
           <div className="mt-2">

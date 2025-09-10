@@ -20,9 +20,12 @@ import AboutUs from './components/AboutUs.jsx';
 import Contact from './components/ContactUs.jsx';
 import Gallery from './components/Gallery.jsx';
 import OrderConfirmation from './components/orderConfirmation';
+import CardPayment from './components/CardPaymentPage';
 import MyOrders from './components/MyOrders';
 import AdminOrders from './components/AdminOrders';
 import SalesDashboard from './components/AdminDailySalesDashboard';
+import { Elements } from "@stripe/react-stripe-js";
+import { stripePromise } from './lib/stripe.js';
 
 // Layouts
 import ProtectedLayout from './layout/Protected.Layout.jsx';
@@ -39,6 +42,7 @@ createRoot(document.getElementById('root')).render(
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
       <Provider store={store}>
         <BrowserRouter>
+         <Elements stripe={stripePromise}>
           <Routes>
             <Route element={<RootLayout />}>
               {/* Home */}
@@ -48,6 +52,7 @@ createRoot(document.getElementById('root')).render(
               <Route path="shop" element={<ShopPage showHero={false} showInspiration={false} />} />
               <Route path="shop/:category" element={<ShopPage showHero={false} showInspiration={false} />} />
               <Route path="shop/:category/:colorSlug" element={<ShopPage showHero={false} showInspiration={false} />} />
+              
 
               {/* Static */}
               <Route path="about" element={<AboutUs />} />
@@ -56,6 +61,7 @@ createRoot(document.getElementById('root')).render(
 
               {/* Cart */}
               <Route path="cart" element={<CartPage />} />
+              <Route path="checkout/card-payment" element={<CardPayment />} />
 
               {/* Product detail */}
               <Route path="product/:productId" element={<ProductView />} />
@@ -79,6 +85,7 @@ createRoot(document.getElementById('root')).render(
               </Route>
             </Route>
           </Routes>
+          </Elements>
         </BrowserRouter>
       </Provider>
     </ClerkProvider>

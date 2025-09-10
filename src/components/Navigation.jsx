@@ -1,141 +1,120 @@
 import { useState } from "react";
-import { Menu, X, ShoppingBag, Search, User, BellIcon ,ChartSpline} from "lucide-react";
+import { Menu, X, ShoppingBag, BellIcon, ChartSpline, Search as SearchIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/clerk-react";
+import ProductSearchForm from "./ProductSearchForm";
+import Logo from "../components/Logo";
 
 export default function Navigation() {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const { user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const [showSearch, setShowSearch] = useState(false);
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   return (
-    <header className="bg-white border-b border-gray-200 shadow-md">
-      <div className="container mx-auto px-4 lg:px-16 flex items-center justify-between h-16">
-        {/* Logo */}
-        <Link to="/" className="font-bold text-xl md:text-2xl mr-15">
-          Mebius
-        </Link>
-
-        {/* Desktop Menu */}
-        <nav className="hidden md:flex space-x-6 items-center">
-          <Link to="/" className="font-medium hover:text-gray-600">Home</Link>
-          <Link to="/gallery" className="font-medium hover:text-gray-600">Gallery</Link>
-          <Link to="/about" className="font-medium hover:text-gray-600">About Us</Link>
-          <Link to="/contact" className="font-medium hover:text-gray-600">Contact</Link>
-          <Link to="/my-orders" className="font-medium hover:text-gray-600">My Orders</Link>
-
-          {user?.publicMetadata?.role === "admin" && (
-            <>
-              <Link
-                to="/admin/products/create"
-                className="font-medium hover:text-gray-600 bg-black text-white px-3 py-1 rounded-lg text-sm"
-              >
-                Create Product
-              </Link>
-              <Link
-                to="/admin/orders"
-                className="font-medium hover:text-gray-600 flex   bg-black text-white px-3 py-1 rounded-lg text-sm space-x-1"
-              >
-                 <BellIcon size={20} />
-                <span >AllOrders</span>
-                
-              </Link>
-              <Link
-                to="/admin/sales-dashboard"
-                className="font-medium hover:text-gray-600 bg-black text-white px-3 py-1 rounded-lg text-sm"
-              >
-                <ChartSpline size={20} />
-              </Link>
-            </>
-          )}
-        </nav>
-
-        {/* Right Icons */}
-        <div className="flex items-center space-x-4">
-          <button aria-label="Search" className="p-1">
-            <Search size={20} />
-          </button>
-
-          <Link to="/cart" className="relative p-1">
-            <ShoppingBag size={20} />
-            {cartItemCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-black text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-                {cartItemCount}
-              </span>
-            )}
+    <header className="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16 items-center">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2 font-extrabold text-xl md:text-2xl tracking-tight text-gray-900">
+            {/* <span className="bg-gradient-to-tr from-yellow-400 to-yellow-600 text-transparent bg-clip-text text-shadow-black">Mebius</span> */}
+            <Logo />
           </Link>
-
-          {/* Clerk Auth */}
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-          <SignedOut className="hidden md:flex gap-4">
-            <Link to="/sign-in" className="font-medium">Sign In</Link>
-            <Link to="/sign-up" className="font-medium">Sign Up</Link>
-          </SignedOut>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-1"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          >
-            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          {/* Nav */}
+          <nav className="hidden lg:flex space-x-8 items-center font-medium">
+            <Link to="/" className="hover:text-yellow-700 transition">Home</Link>
+            <Link to="/gallery" className="hover:text-yellow-700 transition">Gallery</Link>
+            <Link to="/about" className="hover:text-yellow-700 transition">About Us</Link>
+            <Link to="/contact" className="hover:text-yellow-700 transition">Contact</Link>
+            <Link to="/my-orders" className="hover:text-yellow-700 transition">My Orders</Link>
+            {user?.publicMetadata?.role === "admin" && <>
+              <Link to="/admin/products/create" className="bg-black text-white px-3 py-1 rounded shadow text-xs hover:bg-yellow-700 transition">Create Product</Link>
+              <Link to="/admin/orders" className="flex items-center bg-black text-white px-3 py-1 rounded shadow space-x-1 text-xs hover:bg-yellow-700 transition"><BellIcon className="h-4 w-4" /><span>AllOrders</span></Link>
+              <Link to="/admin/sales-dashboard" className="bg-black text-white px-3 py-1 rounded shadow text-xs hover:bg-yellow-700 transition flex items-center"><ChartSpline className="h-4 w-4" /></Link>
+            </>}
+          </nav>
+          {/* Actions */}
+          <div className="flex items-center space-x-2">
+            {/* Search Icon */}
+            <button
+              className="rounded-full p-2 hover:bg-gray-100 transition"
+              onClick={() => setShowSearch((v) => !v)}
+              aria-label={showSearch ? "Close search" : "Open search"}
+            >
+              <SearchIcon size={22} />
+            </button>
+            {/* Cart */}
+            <Link to="/cart" className="relative p-2 rounded hover:bg-gray-100 transition">
+              <ShoppingBag size={22} />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-5 h-5 flex items-center justify-center rounded-full border border-white">
+                  {cartItemCount}
+                </span>
+              )}
+            </Link>
+            {/* Auth */}
+            <SignedIn>
+              <UserButton afterSignOutUrl="/"/>
+            </SignedIn>
+            <SignedOut>
+              <Link to="/sign-in" className="font-medium hover:text-yellow-700">SignIn</Link>
+              <Link to="/sign-up" className="font-medium hover:text-yellow-700">SignUp</Link>
+            </SignedOut>
+            {/* Mobile Menu Button */}
+            <button
+              className="flex items-center justify-center p-2 lg:hidden"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
-
-      {/* Mobile Menu */}
+      {showSearch && (
+        <div className="w-full shadow-md bg-white border-b border-gray-200 flex justify-center py-4 px-2 animate-fade-in sticky top-16 z-40">
+          <div className="w-full max-w-xl">
+            <ProductSearchForm onSearch={() => setShowSearch(false)} />
+          </div>
+        </div>
+      )}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 shadow-md">
-          <nav className="flex flex-col space-y-2 px-4 py-4">
-            <Link to="/" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">Home</Link>
-            <Link to="/gallery" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">Gallery</Link>
-            <Link to="/about" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">About Us</Link>
-            <Link to="/contact" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">Contact</Link>
-            <Link to="/my-orders" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-gray-600">My Orders</Link>
-
-           {user?.publicMetadata?.role === "admin" && (
-              <div className="flex space-x-2">
-                {/* Create Product Button */}
-                <Link
-                  to="/admin/products/create"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center justify-center font-medium hover:text-white bg-black text-white px-3 py-1 rounded text-sm"
-                >
-                  Create Product
-                </Link>
-
-                {/* Orders Button with Bell Icon */}
-                <Link
-                  to="/admin/orders"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center justify-center font-medium hover:text-white bg-black text-white px-3 py-1 rounded text-sm space-x-1"
-                >
-                  <BellIcon size={16} />
-                  <span>AllOrders</span>
-                </Link>
-                <Link
-                  to="/admin/sales-dashboard"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center justify-center font-medium hover:text-white bg-black text-white px-3 py-1 rounded text-sm"
-                >
-                  <ChartSpline size={16} />
-                </Link>
-              </div>
+        <div className="fixed inset-0 bg-black/20 z-50" onClick={() => setIsMenuOpen(false)}>
+          <div
+            className="absolute top-0 left-0 w-64 h-full bg-white shadow-lg p-6 flex flex-col gap-4"
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-800"
+              onClick={() => setIsMenuOpen(false)}
+              aria-label="Close menu"
+            >
+              <X size={24} />
+            </button>
+            <Link to="/" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold hover:text-yellow-700">Home</Link>
+            <Link to="/gallery" onClick={() => setIsMenuOpen(false)} className="hover:text-yellow-700">Gallery</Link>
+            <Link to="/about" onClick={() => setIsMenuOpen(false)} className="hover:text-yellow-700">About Us</Link>
+            <Link to="/contact" onClick={() => setIsMenuOpen(false)} className="hover:text-yellow-700">Contact</Link>
+            <Link to="/my-orders" onClick={() => setIsMenuOpen(false)} className="hover:text-yellow-700">My Orders</Link>
+            {user?.publicMetadata?.role === "admin" && (
+              <>
+                <Link to="/admin/products/create" className="bg-black text-white py-1 px-2 rounded text-xs hover:bg-yellow-700" onClick={() => setIsMenuOpen(false)}>Create Product</Link>
+                <Link to="/admin/orders" className="flex items-center bg-black text-white py-1 px-2 rounded text-xs hover:bg-yellow-700 mt-1" onClick={() => setIsMenuOpen(false)}><BellIcon className="h-4 w-4 mr-1" />AllOrders</Link>
+                <Link to="/admin/sales-dashboard" className="bg-black text-white py-1 px-2 rounded text-xs hover:bg-yellow-700 flex items-center mt-1" onClick={() => setIsMenuOpen(false)}><ChartSpline className="h-4 w-4" /></Link>
+              </>
             )}
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-            <SignedOut className="flex flex-col gap-2 mt-2">
-              <Link to="/sign-in" onClick={() => setIsMenuOpen(false)} className="font-medium">Sign In</Link>
-              <Link to="/sign-up" onClick={() => setIsMenuOpen(false)} className="font-medium">Sign Up</Link>
-            </SignedOut>
-
-          </nav>
+            <div className="flex flex-col gap-2 mt-4">
+              <SignedIn>
+                <UserButton afterSignOutUrl="/"/>
+              </SignedIn>
+              <SignedOut>
+                <Link to="/sign-in" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-yellow-700">Sign In</Link>
+                <Link to="/sign-up" onClick={() => setIsMenuOpen(false)} className="font-medium hover:text-yellow-700">Sign Up</Link>
+              </SignedOut>
+            </div>
+          </div>
         </div>
       )}
     </header>

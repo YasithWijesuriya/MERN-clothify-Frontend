@@ -26,24 +26,22 @@ export const api = createApi({
 
 
     getAllProducts: build.query({
-      query: ({ categorySlug, colorSlug ,sortByPrice } = {}) => {
+    query: ({ categorySlug, colorSlug, sortByPrice, search } = {}) => {
         const params = new URLSearchParams();
         if (categorySlug) params.append('categorySlug', categorySlug.toLowerCase());
         if (colorSlug) params.append('colorSlug', colorSlug.toLowerCase());
         if (sortByPrice) params.append('sortByPrice', sortByPrice);
-        const qs = params.toString();
-        return `/products${qs ? `?${qs}` : ''}`;
-      },
-      providesTags: (result = []) =>
+        if (search) params.append('search', search.trim());
+        return `/products${params.toString() ? `?${params.toString()}` : ''}`;
+    },
+    providesTags: (result = []) =>
         result.length
           ? [
               ...result.map((p) => ({ type: 'Products', id: p._id })),
               { type: 'Products', id: 'LIST' },
             ]
           : [{ type: 'Products', id: 'LIST' }],
-}),
-
-
+  }),
     getProductsByCategory: build.query({
           query: (categoryId) => `/products?categoryId=${categoryId}`,
     }),
@@ -82,17 +80,15 @@ export const api = createApi({
 
     getMyOrdersByUser: build.query({
       query: () => "/orders/my-orders",
+      providesTags: ['MyOrders'],   // ← add this
       transformResponse: (response) => {
         if (response.status === 'success') {
           return response;
         }
         throw new Error(response.message || 'Failed to fetch orders');
       },
-      transformErrorResponse: (error) => ({
-        status: error.status,
-        message: error.data?.message || 'Failed to load orders'
-      })
     }),
+
     getAllGalleryItems: build.query({
       query: () => "/gallery",
       providesTags: (result = []) => [
@@ -165,6 +161,14 @@ export const api = createApi({
           { type: 'Gallery', id: 'LIST' },
         ],
     }),
+    createPaymentIntent: build.mutation({
+      query: (payload) => ({
+        url: '/payments/create-payment-intent', 
+        method: 'POST',
+        body: payload,
+      })
+    }),
+
     getDailySales: build.query({
         queryFn: async (days, _queryApi, _extraOptions, fetchWithBQ) => {
           const result = await fetchWithBQ(`/orders/daily-sales?days=${days}`);
@@ -174,6 +178,7 @@ export const api = createApi({
 
   }),
 })
+
   
 
 export const { 
@@ -193,7 +198,9 @@ export const {
   useGetDailySalesQuery,
   useGetAllGalleryItemsQuery,
   useCreateGalleryItemMutation,
-  useDeleteGalleryItemMutation
+  useCreatePaymentIntentMutation,
+  useDeleteGalleryItemMutation,
+  
 } = api;
 
 

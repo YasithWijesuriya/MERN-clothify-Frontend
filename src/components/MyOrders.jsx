@@ -3,22 +3,23 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, CheckCircle, XCircle, Truck } from "lucide-react";
 import { useAuth, RedirectToSignIn } from "@clerk/clerk-react";
 import { useGetMyOrdersByUserQuery } from "@/lib/api";
+import { useStripe } from "@stripe/react-stripe-js";
 
 const MyOrders = () => {
   const { isSignedIn, isLoaded, userId } = useAuth();
-  
+  const stripe = useStripe();
+
   const { data: response, isLoading, error } = useGetMyOrdersByUserQuery(undefined, {
-    skip: !isLoaded || !isSignedIn
+    refetchOnMountOrArgChange: true,
+    pollingInterval: 10000,
+    skip: !isLoaded || !isSignedIn,
   });
 
-  // Get orders from the response data
   const orders = response?.data || [];
 
-  // Add more detailed logging
-  console.log('Auth Status:', { isSignedIn, isLoaded, userId });
-  console.log('Query Status:', { isLoading, error, ordersCount: orders?.length });
+  console.log("Auth Status:", JSON.stringify({ isSignedIn, isLoaded, userId }, null, 2));
+  console.log("Query Status:", JSON.stringify({ isLoading, error, ordersCount: orders?.length }, null, 2));
 
-  // Wait for auth to load
   if (!isLoaded) {
     return (
       <div className="flex justify-center mt-10">
@@ -27,7 +28,6 @@ const MyOrders = () => {
     );
   }
 
-  // Redirect if not signed in
   if (!isSignedIn) {
     return <RedirectToSignIn />;
   }
@@ -40,14 +40,14 @@ const MyOrders = () => {
     );
   }
 
-  // Improve error handling
   if (error) {
-    console.error('Orders Error:', error);
+    console.error("Orders Error:", error);
     return (
       <div className="text-center mt-10">
         <p className="text-red-600">
-          {error.status === 401 ? 'Please sign in to view your orders' : 
-           error.message || 'Failed to load orders'}
+          {error.status === 401
+            ? "Please sign in to view your orders"
+            : error.message || "Failed to load orders"}
         </p>
       </div>
     );
@@ -73,7 +73,7 @@ const MyOrders = () => {
         <p className="text-lg">
           <span className="font-medium">Total:</span>{" "}
           <span className="text-green-600 font-semibold">
-            LKR{order.totalPrice.toFixed(2)}
+            LKR {order.totalPrice.toFixed(2)}
           </span>
         </p>
 
@@ -100,15 +100,13 @@ const MyOrders = () => {
           <h3 className="font-semibold text-lg mb-2">Ordered Items:</h3>
           <div className="space-y-2">
             {order.items.map((item) => (
-              <div 
-                key={item._id} 
+              <div
+                key={item._id}
                 className="flex items-center justify-between bg-gray-50 p-3 rounded-lg"
               >
                 <div>
-                  <p className="font-medium">{item.productId?.name || 'Product'}</p>
-                  <p className="text-sm text-gray-600">
-                    Quantity: {item.quantity}
-                  </p>
+                  <p className="font-medium">{item.productId?.name || "Product"}</p>
+                  <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
                 </div>
                 <p className="font-medium">
                   LKR {(item.productId?.price * item.quantity || 0).toFixed(2)}
@@ -145,7 +143,12 @@ const MyOrders = () => {
         {!orders?.length ? (
           <p className="text-center col-span-full">No orders placed yet.</p>
         ) : (
-          orders.map(renderOrderCard)
+          Array.isArray(orders) ? (
+        orders.map((order) => <React.Fragment key={order._id}>{renderOrderCard(order)}</React.Fragment>)
+      ) : (
+        <p className="text-center col-span-full">No orders placed yet.</p>
+      )
+
         )}
       </div>
     </div>

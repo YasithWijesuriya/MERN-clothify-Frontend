@@ -4,7 +4,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, CheckCircle, XCircle, Truck } from "lucide-react";
 
 const AdminOrders = () => {
-  const { data: orders, isLoading, error } = useGetAllOrdersQuery();
+  const { data: orders, isLoading, error } = useGetAllOrdersQuery(undefined,{
+    pollingInterval: 10000, 
+    refetchOnMountOrArgChange: true,
+  });
 
   if (isLoading)
     return (
