@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useCreateProductMutation , useGetColorsQuery} from "@/lib/api";
 import ImageInput from "./Image-Input"
+import { useEffect } from "react";
 
 
 import {
@@ -38,7 +39,9 @@ const createProductSchema = z.object({
 
 function createProductForm({categories}) {
   
-  
+  useEffect (()=>{
+    window.scrollTo({top:0, behavior:"instant"})
+  })
   
   const form = useForm({
     resolver: zodResolver(createProductSchema),

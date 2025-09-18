@@ -2,12 +2,18 @@ import React from "react";
 import { useGetAllOrdersQuery } from "@/lib/api";
 import { Card, CardContent } from "@/components/ui/card"; 
 import { Loader2, CheckCircle, XCircle, Truck } from "lucide-react";
+import { useEffect } from "react";
+import { motion } from "framer-motion";
 
 const AdminOrders = () => {
   const { data: orders, isLoading, error } = useGetAllOrdersQuery(undefined,{
     pollingInterval: 10000, 
     refetchOnMountOrArgChange: true,
   });
+
+   useEffect (()=>{
+      window.scrollTo({top:0, behavior:"instant"})
+    })
 
   if (isLoading)
     return (
@@ -23,6 +29,13 @@ const AdminOrders = () => {
 
   return (
     <div className="p-5">
+       <motion.div
+      className="p-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+    >
       <h1 className="text-3xl font-bold mb-5">All Orders (Admin)</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -87,6 +100,7 @@ const AdminOrders = () => {
           </Card>
         ))}
       </div>
+      </motion.div>
     </div>
   );
 };

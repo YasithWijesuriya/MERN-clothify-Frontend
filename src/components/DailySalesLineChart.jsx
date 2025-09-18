@@ -1,14 +1,26 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import { useEffect } from "react";
+import { motion } from "framer-motion";
 
 const chartConfig = {
   sales: { label: "Sales", color: "var(--chart-1)" },
 };
 
 export function DailySalesLineChart({ data, days }) {
+  useEffect(()=>{
+        window.scrollTo({top:0,behavior:"instant"});
+      },);
   return (
     <Card className="py-0">
+       <motion.div
+      className="p-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+    >
       <CardHeader className="!pb-2">
         <CardTitle>Daily Sales (Last {days} days)</CardTitle>
         <CardDescription>Total by day</CardDescription>
@@ -80,6 +92,7 @@ export function DailySalesLineChart({ data, days }) {
           </LineChart>
         </ChartContainer>
       </CardContent>
+      </motion.div>
     </Card>
   );
 }
