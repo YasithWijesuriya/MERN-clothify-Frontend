@@ -1,6 +1,19 @@
+import { motion } from "framer-motion";
+import { useEffect } from "react";
+
 export default function Contact() {
+  useEffect(()=>{
+    window.scrollTo({top:0, behavior:"instant"});
+  },);
   return (
     <section className="max-w-full mx-auto px-6 py-20 bg-gradient-to-br from-blue-50 ">
+       <motion.div
+      className="p-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+    >
       <h1 className="text-5xl font-bold mb-6 text-gray-900 text-center">
         Contact Us
       </h1>
@@ -74,6 +87,7 @@ export default function Contact() {
           </div>
         </div>
       </div>
+      </motion.div>
     </section>
   );
 }

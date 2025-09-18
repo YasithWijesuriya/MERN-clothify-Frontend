@@ -6,11 +6,17 @@ import { useDispatch } from "react-redux"
 import { addToCart } from "@/lib/features/cartSlice"
 import { ArrowLeft, Star } from "lucide-react"
 import CreateReviewForm from "@/components/CreateReviewForm"
+import { motion } from "framer-motion"
+import { useEffect } from "react"
 
 export default function ProductView() {
   const { productId } = useParams()
   const dispatch = useDispatch()
-  
+
+  useEffect(() => {
+    
+    window.scrollTo({ top: 0, behavior:"instant"});
+  }, [productId]);
   const { data: products, isLoading, error } = useGetAllProductsQuery()
   
   const product = products?.find(p => p._id === productId)
@@ -47,6 +53,13 @@ export default function ProductView() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
+       <motion.div
+      className="p-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+    >
       {/* Back Button */}
       <div className="max-w-3xl mx-auto mb-6">
         <Link
@@ -96,6 +109,7 @@ export default function ProductView() {
 
         </Card>
       </div>
+      </motion.div>
     </div>
   )
 }

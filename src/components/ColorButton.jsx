@@ -51,11 +51,7 @@ function ColorButton() {
             key={c._id}
             to={`/shop/${category}/${slug}`}
             className={`px-4 py-2 rounded-full text-sm font-medium border`}
-            style={{
-              background: bg || undefined,
-              color: bg ? textColor : undefined,
-              boxShadow: active ? '0 0 0 3px rgba(0,0,0,0.08)' : undefined,
-            }}
+            style={{ background: bg || undefined, color: bg ? textColor : undefined, boxShadow: active ? "0 0 0 3px rgba(59,130,246,0.5), 0 4px 8px rgba(0,0,0,0.15)" : undefined, transform: active ? "scale(1.05)" : "scale(1)", transition: "all 0.2s ease-in-out", borderRadius: "0.75rem", }}
           >
             {c.name}
           </Link>

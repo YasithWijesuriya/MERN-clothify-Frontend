@@ -4,9 +4,14 @@ import { Loader2, CheckCircle, XCircle, Truck } from "lucide-react";
 import { useAuth, RedirectToSignIn } from "@clerk/clerk-react";
 import { useGetMyOrdersByUserQuery } from "@/lib/api";
 import { useStripe } from "@stripe/react-stripe-js";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 const MyOrders = () => {
   const { isSignedIn, isLoaded, userId } = useAuth();
+  useEffect(()=>{
+    window.scrollTo({top:0,behavior:"instant"});
+  },);
   const stripe = useStripe();
 
   const { data: response, isLoading, error } = useGetMyOrdersByUserQuery(undefined, {
@@ -137,6 +142,13 @@ const MyOrders = () => {
 
   return (
     <div className="p-5">
+       <motion.div
+      className="p-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      >
       <h1 className="text-3xl font-bold mb-5">My Orders</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -144,13 +156,14 @@ const MyOrders = () => {
           <p className="text-center col-span-full">No orders placed yet.</p>
         ) : (
           Array.isArray(orders) ? (
-        orders.map((order) => <React.Fragment key={order._id}>{renderOrderCard(order)}</React.Fragment>)
-      ) : (
-        <p className="text-center col-span-full">No orders placed yet.</p>
-      )
-
+            orders.map((order) => <React.Fragment key={order._id}>{renderOrderCard(order)}</React.Fragment>)
+          ) : (
+            <p className="text-center col-span-full">No orders placed yet.</p>
+          )
+          
         )}
       </div>
+        </motion.div>
     </div>
   );
 };

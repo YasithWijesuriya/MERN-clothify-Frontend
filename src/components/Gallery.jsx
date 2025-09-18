@@ -6,6 +6,8 @@ import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useGetAllGalleryItemsQuery, useCreateGalleryItemMutation, useDeleteGalleryItemMutation } from "@/lib/api";
 import GalleryImageInput from "./GalleryImageInput";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
 import {
   Form,
   FormControl,
@@ -46,6 +48,9 @@ export default function Gallery() {
       description: "",
     },
   });
+   useEffect(()=>{
+      window.scrollTo({top:0,behavior:"instant"});
+    },);
 
   const { reset } = form;
   const [createGallery] = useCreateGalleryItemMutation();
@@ -85,6 +90,13 @@ export default function Gallery() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+       <motion.div
+            className="p-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+          >
       {/* Admin Only Form */}
       {user?.publicMetadata?.role === "admin" && (
         <div className="mb-8 bg-white p-6 rounded-lg shadow-md">
@@ -191,6 +203,7 @@ export default function Gallery() {
     ))
   )}
 </div>
+</motion.div>
 
     </div>
   );

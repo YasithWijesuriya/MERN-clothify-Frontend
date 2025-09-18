@@ -10,6 +10,8 @@ import ColorButton from "@/components/ColorButton";
 import CategoryButton from "@/components/CategoryButton";
 import CasualInspirations from "../components/CasualInspirations";
 import HeroGrid from "../components/HeroGrid";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 const ShopPage = ({ showHero = false, showInspiration = false }) => {
   const { category, categorySlug, colorSlug } = useParams();
@@ -18,6 +20,10 @@ const ShopPage = ({ showHero = false, showInspiration = false }) => {
   const [sortByPrice, setSortByPrice] = useState("");
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get("search") || "";
+  useEffect(() => {
+    
+    window.scrollTo({ top: 0, behavior: "instant" });
+  },);
   
 
   const dispatch = useDispatch();
@@ -73,6 +79,7 @@ const ShopPage = ({ showHero = false, showInspiration = false }) => {
 
   if (isLoading) {
     return (
+      
       <div className="flex justify-center items-center mt-20">
         <div className="w-10 h-10 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
         <span className="ml-3 text-gray-600 text-sm font-medium">Loading products...</span>
@@ -99,6 +106,13 @@ const ShopPage = ({ showHero = false, showInspiration = false }) => {
 
   return (
     <div className="p-6">
+       <motion.div
+      className="p-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+    >
       {showHero && <HeroGrid />}
       {showInspiration && <CasualInspirations />}
 
@@ -106,7 +120,11 @@ const ShopPage = ({ showHero = false, showInspiration = false }) => {
 
       <CategoryButton />
       <ColorButton />
+      <Link
+      to={`/shop`}
+      >
       <PriceSort sortByPrice={sortByPrice} setSortByPrice={setSortByPrice} />
+      </Link>
 
       {!filteredProducts || filteredProducts.length === 0 ? (
         <p className="text-center text-gray-500 text-lg">No products available.</p>
@@ -175,6 +193,7 @@ const ShopPage = ({ showHero = false, showInspiration = false }) => {
           })}
         </div>
       )}
+      </motion.div>
     </div>
   );
 };

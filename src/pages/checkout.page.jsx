@@ -3,6 +3,7 @@ import CartItem from "@/components/CartItem";
 import ShippingAddressForm from "@/components/ShippingAddressForm";
 import { Card } from "@/components/ui/card";
 import { removeFromCart } from "@/lib/features/cartSlice";
+import { motion } from "framer-motion";
 function CheckoutPage() {
   const cart = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
@@ -19,6 +20,13 @@ function CheckoutPage() {
 
   return (
     <main className="px-4 md:px-16 min-h-screen py-8 bg-gray-50">
+       <motion.div
+      className="p-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+    >
       <h2 className="text-4xl font-bold mb-8 text-center">Checkout</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
@@ -45,6 +53,7 @@ function CheckoutPage() {
           <ShippingAddressForm />
         </section>
       </div>
+      </motion.div>
     </main>
   );
 }

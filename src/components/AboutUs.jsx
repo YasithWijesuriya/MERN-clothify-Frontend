@@ -1,6 +1,19 @@
+import { motion } from "framer-motion";
+import { useEffect } from "react";
 export default function AboutUs() {
+
+  useEffect(()=>{
+    window.scrollTo({top:0,behavior:"smooth"});
+  },);
   return (
     <section className="max-w-6xl mx-auto px-6 py-16">
+       <motion.div
+      className="p-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+    >
       <div className="text-center mb-16">
         <h1 className="text-5xl font-bold mb-6 text-gray-900">About Us</h1>
         <p className="text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
@@ -91,6 +104,7 @@ export default function AboutUs() {
           </div>
         </div>
       </div>
+      </motion.div>
     </section>
   );
 }

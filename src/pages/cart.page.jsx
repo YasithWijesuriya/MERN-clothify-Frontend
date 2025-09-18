@@ -3,11 +3,17 @@ import { useSelector,useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import CartItem from "@/components/CartItem";
 import { removeFromCart } from "@/lib/features/cartSlice";
+import { useEffect } from "react";
+import { motion } from "framer-motion";
 
 
 function CartPage() {
     const cart = useSelector((state) => state.cart.cartItems);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
 
     const onRemove = (id) => {
         dispatch(removeFromCart(id));
@@ -15,6 +21,13 @@ function CartPage() {
 
     return (
         <main className="px-16 min-h-screen py-8">
+           <motion.div
+                className="p-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+              >
           <h2 className="text-4xl font-bold">My Cart</h2>
          <div className="mt-4 grid gap-4 w-3/4 sm:grid-cols-1 md:grid-cols-2 ">
               {cart.map((item, index) => (
@@ -32,6 +45,7 @@ function CartPage() {
               <p>No items in cart</p>
             )}
           </div>
+          </motion.div>
         </main>
       );
     }

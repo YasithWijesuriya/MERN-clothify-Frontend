@@ -26,6 +26,7 @@ import AdminOrders from './components/AdminOrders';
 import SalesDashboard from './components/AdminDailySalesDashboard';
 import { Elements } from "@stripe/react-stripe-js";
 import { stripePromise } from './lib/stripe.js';
+import { AnimatePresence } from "framer-motion";
 
 // Layouts
 import ProtectedLayout from './layout/Protected.Layout.jsx';
@@ -43,6 +44,7 @@ createRoot(document.getElementById('root')).render(
       <Provider store={store}>
         <BrowserRouter>
          <Elements stripe={stripePromise}>
+           <AnimatePresence mode="wait">
           <Routes>
             <Route element={<RootLayout />}>
               {/* Home */}
@@ -52,6 +54,7 @@ createRoot(document.getElementById('root')).render(
               <Route path="shop" element={<ShopPage showHero={false} showInspiration={false} />} />
               <Route path="shop/:category" element={<ShopPage showHero={false} showInspiration={false} />} />
               <Route path="shop/:category/:colorSlug" element={<ShopPage showHero={false} showInspiration={false} />} />
+
               
 
               {/* Static */}
@@ -85,6 +88,7 @@ createRoot(document.getElementById('root')).render(
               </Route>
             </Route>
           </Routes>
+          </AnimatePresence>
           </Elements>
         </BrowserRouter>
       </Provider>
